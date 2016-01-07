@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.anrisoftware.globalpom</groupId>
+		<artifactId>globalpom-groovy</artifactId>
+		<version>1.26</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.anrisoftware.simplerest</groupId>
+	<artifactId>simplerest-parent</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Simple REST :: Parent POM</name>
+	<inceptionYear>2016</inceptionYear>
+	<description>Manages the meta-information and dependencies of the project.</description>
+	<url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
+
+	<issueManagement>
+		<system>Redmine</system>
+		<url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
+		<developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
+		<url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>EM</id>
+			<name>Erwin Müller</name>
+			<organization>Advanced Natural Research Insitute GmbH</organization>
+			<email>erwin.mueller@deventm.org</email>
+			<roles>
+				<role>Owner</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>Europe/Berlin</timezone>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>proprietary</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- globalpom -->
+			<dependency>
+				<groupId>com.anrisoftware.globalpom</groupId>
+				<artifactId>globalpom-groovytestutils</artifactId>
+				<version>1.26</version>
+			</dependency>
+			<dependency>
+				<groupId>com.anrisoftware.globalpom</groupId>
+				<artifactId>globalpom-log</artifactId>
+				<version>1.21</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

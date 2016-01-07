@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2013-2015 Erwin Müller <erwin.mueller@deventm.org>
+
+    This file is part of forecast-core. All rights reserved.
+
+-->
+<configuration>
+
+	<appender name="TESTING_STYLE" class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.err</target>
+		<encoder>
+			<pattern>[%level] %-4relative [%thread] %logger{0} - %msg%n%rEx{short}</pattern>
+			<immediateFlush>false</immediateFlush>
+		</encoder>
+	</appender>
+
+	<root level="ERROR">
+		<appender-ref ref="TESTING_STYLE" />
+	</root>
+
+	<logger name="com.anrisoftware" level="INFO" />
+	<logger name="com.anrisoftware.forecast" level="ALL" />
+
+</configuration>

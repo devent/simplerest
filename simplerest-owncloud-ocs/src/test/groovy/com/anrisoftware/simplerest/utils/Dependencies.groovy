@@ -16,6 +16,7 @@ import com.anrisoftware.simplerest.owncloud.OwncloudAccount
 import com.anrisoftware.simplerest.owncloud.RestOwncloudModule
 import com.anrisoftware.simplerest.owncloud.DefaultOwncloudAccount.DefaultOwncloudAccountFactory
 import com.anrisoftware.simplerest.owncloudocs.RestOwncloudOcsModule
+import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsPoolingStatus.OwncloudOcsPoolingStatusFactory
 import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsStatus.OwncloudOcsStatusFactory
 import com.google.inject.Guice
 import com.google.inject.Injector
@@ -52,6 +53,9 @@ class Dependencies {
 
     @Inject
     OwncloudOcsStatusFactory statusFactory
+
+    @Inject
+    OwncloudOcsPoolingStatusFactory poolingStatusFactory
 
     OwncloudAccount createAccount() {
         if (StringUtils.isBlank(accountUsername)) {

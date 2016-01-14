@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import org.apache.http.client.utils.URIBuilder;
 
 import com.anrisoftware.simplerest.core.SimpleRestException;
-import com.anrisoftware.simplerest.ocs.DefaultOcsShareMessage;
-import com.anrisoftware.simplerest.ocs.OcsShareMessage;
+import com.anrisoftware.simplerest.ocs.DefaultSharesMessage;
+import com.anrisoftware.simplerest.ocs.SharesMessage;
 import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
 import com.anrisoftware.simplerest.owncloud.OwncloudShares;
 import com.anrisoftware.simplerest.owncloudocs.SimpleGetWorker.SimpleGetWorkerFactory;
@@ -78,15 +78,15 @@ public class OwncloudOcsShares implements OwncloudShares {
     }
 
     @Override
-    public OcsShareMessage call() throws SimpleRestException {
+    public SharesMessage call() throws SimpleRestException {
         return sendRequest();
     }
 
-    private DefaultOcsShareMessage sendRequest() throws SimpleRestException {
+    private DefaultSharesMessage sendRequest() throws SimpleRestException {
         URI requestUri = getRequestURI();
         SimpleGetWorker requestWorker = simpleGetWorkerFactory.create(this,
                 requestUri, getAccount(), parseResponse, nopParseResponse);
-        DefaultOcsShareMessage data = (DefaultOcsShareMessage) requestWorker
+        DefaultSharesMessage data = (DefaultSharesMessage) requestWorker
                 .retrieveData();
         return data;
     }

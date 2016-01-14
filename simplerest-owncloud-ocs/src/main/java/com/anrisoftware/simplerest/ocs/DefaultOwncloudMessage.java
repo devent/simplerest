@@ -1,21 +1,27 @@
 package com.anrisoftware.simplerest.ocs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class DefaultOcsMessage<T extends OcsData> implements OcsMessage<T> {
+public class DefaultOwncloudMessage<T extends OwncloudData> implements
+        OwncloudMessage<T> {
 
-    private OcsMeta meta;
+    private OwncloudMeta meta;
 
     private List<T> data;
 
-    public void setMeta(DefaultOcsMeta meta) {
+    public DefaultOwncloudMessage() {
+        this.data = new ArrayList<T>();
+    }
+
+    public void setMeta(DefaultOwncloudMeta meta) {
         this.meta = meta;
     }
 
     @Override
-    public OcsMeta getMeta() {
+    public OwncloudMeta getMeta() {
         return meta;
     }
 
@@ -27,6 +33,10 @@ public class DefaultOcsMessage<T extends OcsData> implements OcsMessage<T> {
     @Override
     public List<T> getData() {
         return data;
+    }
+
+    public void addData(T data) {
+        this.data.add(data);
     }
 
     @Override

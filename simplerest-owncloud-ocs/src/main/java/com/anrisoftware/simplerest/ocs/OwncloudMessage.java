@@ -10,9 +10,9 @@ import com.anrisoftware.simplerest.core.Message;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public interface OcsMessage<T extends OcsData> extends Message {
+public interface OwncloudMessage<T extends OwncloudData> extends Message {
 
-    OcsMeta getMeta();
+    OwncloudMeta getMeta();
 
     List<T> getData();
 }

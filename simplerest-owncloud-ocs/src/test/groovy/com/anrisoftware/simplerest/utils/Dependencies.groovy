@@ -16,6 +16,7 @@ import com.anrisoftware.simplerest.owncloud.OwncloudAccount
 import com.anrisoftware.simplerest.owncloud.RestOwncloudModule
 import com.anrisoftware.simplerest.owncloud.DefaultOwncloudAccount.DefaultOwncloudAccountFactory
 import com.anrisoftware.simplerest.owncloudocs.RestOwncloudOcsModule
+import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsCreateShare.OwncloudOcsCreateShareFactory
 import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsPoolingStatus.OwncloudOcsPoolingStatusFactory
 import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsShares.OwncloudOcsSharesFactory
 import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsStatus.OwncloudOcsStatusFactory
@@ -64,6 +65,9 @@ class Dependencies {
 
     @Inject
     OwncloudOcsSharesFactory sharesFactory
+
+    @Inject
+    OwncloudOcsCreateShareFactory createShareFactory
 
     OwncloudAccount createAccount() {
         if (StringUtils.isBlank(accountUsername)) {

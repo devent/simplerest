@@ -35,55 +35,58 @@
 			<scope>test</scope>
 		</dependency>
 
-        <!-- own modules -->
-        <dependency>
-            <groupId>com.anrisoftware.simplerest</groupId>
-            <artifactId>simplerest-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+		<!-- own modules -->
+		<dependency>
+			<groupId>com.anrisoftware.simplerest</groupId>
+			<artifactId>simplerest-core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 
-        <!-- globalpom modules -->
-        <dependency>
-            <groupId>com.anrisoftware.globalpom</groupId>
-            <artifactId>globalpom-log</artifactId>
-        </dependency>
+		<!-- globalpom modules -->
+		<dependency>
+			<groupId>com.anrisoftware.globalpom</groupId>
+			<artifactId>globalpom-log</artifactId>
+		</dependency>
 
-        <!-- jackson modules -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-joda</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<!-- jackson modules -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-joda</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<!-- compile dependencies -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-assistedinject</artifactId>
-        </dependency>
-
-        <dependency>
-        	<groupId>com.anrisoftware.propertiesutils</groupId>
-        	<artifactId>propertiesutils-contextproperties</artifactId>
-        	<version>1.14-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.anrisoftware.propertiesutils</groupId>
+			<artifactId>propertiesutils-contextproperties</artifactId>
+			<version>1.14-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

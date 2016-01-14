@@ -1,6 +1,6 @@
 package com.anrisoftware.simplerest.ocs;
 
-public interface OcsMeta {
+public interface OwncloudMeta {
 
     String getStatus();
 

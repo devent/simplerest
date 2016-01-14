@@ -2,7 +2,7 @@ package com.anrisoftware.simplerest.ocs;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class DefaultOcsShareData implements OcsShareData {
+public class DefaultShareData implements ShareData {
 
     private int id;
 

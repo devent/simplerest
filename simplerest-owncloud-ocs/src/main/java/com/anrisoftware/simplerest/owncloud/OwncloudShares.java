@@ -3,7 +3,7 @@ package com.anrisoftware.simplerest.owncloud;
 import java.util.concurrent.Callable;
 
 import com.anrisoftware.simplerest.core.SimpleRestException;
-import com.anrisoftware.simplerest.ocs.OcsShareMessage;
+import com.anrisoftware.simplerest.ocs.SharesMessage;
 
 /**
  * Retrieves information about shares.
@@ -11,7 +11,7 @@ import com.anrisoftware.simplerest.ocs.OcsShareMessage;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public interface OwncloudShares extends Callable<OcsShareMessage> {
+public interface OwncloudShares extends Callable<SharesMessage> {
 
     /**
      * Returns the account required for authentication.
@@ -49,9 +49,9 @@ public interface OwncloudShares extends Callable<OcsShareMessage> {
     /**
      * Retrieves information about shares.
      *
-     * @return this {@link OcsShareMessage}.
+     * @return this {@link SharesMessage}.
      */
     @Override
-    OcsShareMessage call() throws SimpleRestException;
+    SharesMessage call() throws SimpleRestException;
 
 }

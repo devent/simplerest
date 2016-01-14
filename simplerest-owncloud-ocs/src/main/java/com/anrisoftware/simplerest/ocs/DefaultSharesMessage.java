@@ -4,29 +4,29 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class DefaultOcsShareMessage implements OcsShareMessage {
+public class DefaultSharesMessage implements SharesMessage {
 
-    private final DefaultOcsMessage<OcsShareData> message;
+    private final DefaultOwncloudMessage<ShareData> message;
 
-    public DefaultOcsShareMessage() {
-        this.message = new DefaultOcsMessage<OcsShareData>();
+    public DefaultSharesMessage() {
+        this.message = new DefaultOwncloudMessage<ShareData>();
     }
 
-    public void setMeta(DefaultOcsMeta meta) {
+    public void setMeta(DefaultOwncloudMeta meta) {
         message.setMeta(meta);
     }
 
     @Override
-    public OcsMeta getMeta() {
+    public OwncloudMeta getMeta() {
         return message.getMeta();
     }
 
-    public void setData(List<DefaultOcsShareData> data) {
+    public void setData(List<DefaultShareData> data) {
         message.setData(data);
     }
 
     @Override
-    public List<OcsShareData> getData() {
+    public List<ShareData> getData() {
         return message.getData();
     }
 

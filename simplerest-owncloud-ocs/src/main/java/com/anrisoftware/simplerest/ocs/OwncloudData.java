@@ -1,5 +1,5 @@
 package com.anrisoftware.simplerest.ocs;
 
-public interface OcsData {
+public interface OwncloudData {
 
 }

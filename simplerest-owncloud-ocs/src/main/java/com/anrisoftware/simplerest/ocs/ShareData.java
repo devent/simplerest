@@ -1,6 +1,12 @@
 package com.anrisoftware.simplerest.ocs;
 
-public interface OcsShareData extends OcsData {
+/**
+ * Share information.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 1.0
+ */
+public interface ShareData extends OwncloudData {
 
     int getId();
 

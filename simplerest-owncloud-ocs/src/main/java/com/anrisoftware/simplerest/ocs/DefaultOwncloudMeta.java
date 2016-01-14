@@ -2,7 +2,7 @@ package com.anrisoftware.simplerest.ocs;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class DefaultOcsMeta implements OcsMeta {
+public class DefaultOwncloudMeta implements OwncloudMeta {
 
     private String status;
 

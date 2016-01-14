@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class DefaultOcsMessage implements OcsMessage {
+public class DefaultOcsMessage<T extends OcsData> implements OcsMessage<T> {
 
     private OcsMeta meta;
 
-    private List<? extends OcsData> data;
+    private List<T> data;
 
     public void setMeta(DefaultOcsMeta meta) {
         this.meta = meta;
@@ -19,12 +19,13 @@ public class DefaultOcsMessage implements OcsMessage {
         return meta;
     }
 
-    public void setData(List<? extends OcsData> data) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void setData(List data) {
         this.data = data;
     }
 
     @Override
-    public List<? extends OcsData> getData() {
+    public List<T> getData() {
         return data;
     }
 

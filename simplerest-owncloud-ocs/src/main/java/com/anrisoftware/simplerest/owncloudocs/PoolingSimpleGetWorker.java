@@ -4,26 +4,40 @@ import java.net.URI;
 
 import javax.inject.Inject;
 
-import com.anrisoftware.simplerest.core.AbstractPoolingSimpleGetWorker;
+import com.anrisoftware.simplerest.core.AbstractSimplePutWorker;
+import com.anrisoftware.simplerest.core.Message;
+import com.anrisoftware.simplerest.core.ParseResponse;
 import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
-import com.anrisoftware.simplerest.owncloud.OwncloudStatusMessage;
 import com.google.inject.assistedinject.Assisted;
 
-class PoolingSimpleGetWorker extends
-        AbstractPoolingSimpleGetWorker<OwncloudStatusMessage> {
+/**
+ * Makes a GET request.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 1.0
+ */
+@SuppressWarnings("rawtypes")
+class PoolingSimpleGetWorker extends AbstractSimplePutWorker {
 
     interface PoolingSimpleGetWorkerFactory {
 
-        PoolingSimpleGetWorker create(Object parent, URI requestUri,
-                OwncloudAccount account);
+        PoolingSimpleGetWorker create(
+                Object parent,
+                URI requestUri,
+                OwncloudAccount account,
+                @Assisted("parseResponse") ParseResponse<?> parseResponse,
+                @Assisted("parseErrorResponse") ParseResponse<? extends Message> parseErrorResponse);
 
     }
 
+    @SuppressWarnings("unchecked")
     @Inject
-    PoolingSimpleGetWorker(@Assisted Object parent, @Assisted URI requestUri,
+    PoolingSimpleGetWorker(
+            @Assisted Object parent,
+            @Assisted URI requestUri,
             @Assisted OwncloudAccount account,
-            ParseStatusResponse parseResponse,
-            NopParseResponse parseErrorResponse) {
+            @Assisted("parseResponse") ParseResponse<?> parseResponse,
+            @Assisted("parseErrorResponse") ParseResponse<? extends Message> parseErrorResponse) {
         super(parent, requestUri, parseResponse, parseErrorResponse);
         setAccount(account);
         setCompressed(true);

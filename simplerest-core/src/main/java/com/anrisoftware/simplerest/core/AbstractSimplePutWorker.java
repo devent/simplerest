@@ -8,13 +8,14 @@ package com.anrisoftware.simplerest.core;
 import java.net.URI;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
- * Makes a GET request to the REST API.
+ * Makes a PUT request to the REST API.
  *
  * @param <T>
  *            the type of the requests.
@@ -22,19 +23,22 @@ import org.apache.http.impl.client.CloseableHttpClient;
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public abstract class AbstractSimpleGetWorker<T> extends
+public abstract class AbstractSimplePutWorker<T> extends
         AbstractSimpleWorker<T> {
 
-    protected AbstractSimpleGetWorker(Object parent, URI requestUri,
+    protected AbstractSimplePutWorker(Object parent, URI requestUri,
             ParseResponse<T> parseResponse,
             ParseResponse<? extends Message> parseErrorResponse) {
         super(parent, requestUri, parseResponse, parseErrorResponse);
     }
 
     /**
-     * Makes the request and retrieves the data.
+     * Makes the request and sends the data and retrieves the response.
      *
-     * @return the data.
+     * @param entity
+     *            the {@link HttpEntity} entity.
+     *
+     * @return the response.
      *
      * @throws BadResponseException
      * @throws ErrorParseResponseException
@@ -42,17 +46,18 @@ public abstract class AbstractSimpleGetWorker<T> extends
      * @throws ErrorCloseResponseException
      * @throws ErrorResponseDataException
      */
-    public T retrieveData() throws BadResponseException,
+    public T sendData(HttpEntity entity) throws BadResponseException,
             ErrorParseResponseException, ErrorExecuteRequestException,
             ErrorCloseResponseException, ErrorResponseDataException {
         CloseableHttpClient httpclient = createHttpClient();
-        HttpGet httpget = new HttpGet(requestUri);
+        HttpPut httpput = new HttpPut(requestUri);
+        httpput.setEntity(entity);
         for (Header header : headers) {
-            httpget.addHeader(header);
+            httpput.addHeader(header);
         }
-        CloseableHttpResponse response = executeRequest(httpclient, httpget);
+        CloseableHttpResponse response = executeRequest(httpclient, httpput);
         StatusLine statusLine = response.getStatusLine();
-        return parseResponse(response, httpget, statusLine);
+        return parseResponse(response, httpput, statusLine);
     }
 
 }

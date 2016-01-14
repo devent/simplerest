@@ -5,12 +5,12 @@ import java.util.concurrent.Callable;
 import com.anrisoftware.simplerest.core.SimpleRestException;
 
 /**
- * Requests the status of the Owncloud server.
+ * Uploads a file to the Owncloud server.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public interface OwncloudStatus extends Callable<OwncloudStatus> {
+public interface OwncloudUploadFile extends Callable<OwncloudUploadFile> {
 
     /**
      * Returns the account required for authentication.
@@ -19,20 +19,11 @@ public interface OwncloudStatus extends Callable<OwncloudStatus> {
      */
     OwncloudAccount getAccount();
 
-    boolean getInstalled();
-
-    String getVersion();
-
-    String getVersionString();
-
-    String getEdition();
-
     /**
-     * Retrieves the status.
+     * Uploads the file.
      *
-     * @return this {@link OwncloudStatus}.
+     * @return this {@link OwncloudUploadFile}.
      */
     @Override
-    OwncloudStatus call() throws SimpleRestException;
-
+    OwncloudUploadFile call() throws SimpleRestException;
 }

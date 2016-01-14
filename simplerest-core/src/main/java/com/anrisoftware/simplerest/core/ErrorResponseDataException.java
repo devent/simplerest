@@ -5,17 +5,17 @@
  */
 package com.anrisoftware.simplerest.core;
 
+import org.apache.http.HttpRequest;
 import org.apache.http.StatusLine;
-import org.apache.http.client.methods.HttpGet;
 
 @SuppressWarnings("serial")
 public class ErrorResponseDataException extends SimpleRestException {
 
     private static final String MESSAGE = "Error response";
 
-    public ErrorResponseDataException(HttpGet httpget, StatusLine statusLine) {
+    public ErrorResponseDataException(HttpRequest request, StatusLine statusLine) {
         super(MESSAGE);
-        addContextValue("HTTP-GET", httpget);
+        addContextValue("requests", request);
         addContextValue("response", statusLine);
     }
 

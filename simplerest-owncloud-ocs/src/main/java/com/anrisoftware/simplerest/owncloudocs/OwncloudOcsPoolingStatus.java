@@ -10,7 +10,7 @@ import com.anrisoftware.simplerest.core.SimpleRestException;
 import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
 import com.anrisoftware.simplerest.owncloud.OwncloudStatus;
 import com.anrisoftware.simplerest.owncloud.OwncloudStatusMessage;
-import com.anrisoftware.simplerest.owncloudocs.StatusPoolingSimpleGetWorker.StatusPoolingSimpleGetWorkerFactory;
+import com.anrisoftware.simplerest.owncloudocs.PoolingSimpleGetWorker.PoolingSimpleGetWorkerFactory;
 import com.google.inject.assistedinject.Assisted;
 
 public class OwncloudOcsPoolingStatus extends AbstractOwncloudOcsStatus {
@@ -25,7 +25,7 @@ public class OwncloudOcsPoolingStatus extends AbstractOwncloudOcsStatus {
     private final CloseableHttpClient httpClient;
 
     @Inject
-    private StatusPoolingSimpleGetWorkerFactory getWorkerFactory;
+    private PoolingSimpleGetWorkerFactory getWorkerFactory;
 
     @Inject
     OwncloudOcsPoolingStatus(@Assisted OwncloudAccount account,
@@ -37,7 +37,7 @@ public class OwncloudOcsPoolingStatus extends AbstractOwncloudOcsStatus {
     @Override
     protected OwncloudStatusMessage callStatusFromWorker(URI requestUri)
             throws SimpleRestException {
-        StatusPoolingSimpleGetWorker requestWorker = getWorkerFactory.create(
+        PoolingSimpleGetWorker requestWorker = getWorkerFactory.create(
                 this, requestUri, getAccount());
         requestWorker.setHttpClient(httpClient);
         OwncloudStatusMessage message = requestWorker.retrieveData();

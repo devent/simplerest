@@ -12,14 +12,12 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 @SuppressWarnings("serial")
 public class ErrorCloseResponseException extends SimpleRestException {
 
-    private static final String HTTP_RESPONSE_LABEL = "HTTP-response";
-
     private static final String MESSAGE = "Error close response";
 
     public ErrorCloseResponseException(CloseableHttpResponse response,
             IOException e) {
         super(MESSAGE, e);
-        addContextValue(HTTP_RESPONSE_LABEL, response);
+        addContextValue("response", response);
     }
 
 }

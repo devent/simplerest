@@ -1,29 +1,24 @@
-/*
- * Copyright 2015 Erwin Müller <erwin.mueller@deventm.org>
- *
- * This file is part of forecast-forex-oanda. All rights reserved.
- */
 package com.anrisoftware.simplerest.core;
 
-import static com.anrisoftware.simplerest.core.AbstractSimpleRequestWorkerLogger._.parse_response;
-import static com.anrisoftware.simplerest.core.AbstractSimpleRequestWorkerLogger._.retrieve_get_response;
-import static com.anrisoftware.simplerest.core.AbstractSimpleRequestWorkerLogger._.retrieve_response;
+import static com.anrisoftware.simplerest.core.AbstractSimpleWorkerLogger._.parse_response;
+import static com.anrisoftware.simplerest.core.AbstractSimpleWorkerLogger._.retrieve_get_response;
+import static com.anrisoftware.simplerest.core.AbstractSimpleWorkerLogger._.retrieve_response;
 
 import javax.inject.Singleton;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 
 import com.anrisoftware.globalpom.log.AbstractLogger;
 
 /**
- * Logging for {@link AbstractSimpleGetWorker}.
+ * Logging for {@link AbstractSimplePutWorker}.
  *
  * @author Erwin Mueller, erwin.mueller@deventm.org
  * @since 1.0
  */
 @Singleton
-final class AbstractSimpleRequestWorkerLogger extends AbstractLogger {
+final class AbstractSimplePutWorkerLogger extends AbstractLogger {
 
     enum _ {
 
@@ -46,16 +41,16 @@ final class AbstractSimpleRequestWorkerLogger extends AbstractLogger {
     }
 
     /**
-     * Sets the context of the logger to {@link AbstractSimpleGetWorker}.
+     * Sets the context of the logger to {@link AbstractSimplePutWorker}.
      */
-    public AbstractSimpleRequestWorkerLogger() {
-        super(AbstractSimpleGetWorker.class);
+    public AbstractSimplePutWorkerLogger() {
+        super(AbstractSimplePutWorker.class);
     }
 
     void retrieveResponse(Object parent, CloseableHttpResponse response,
-            HttpGet httpget) {
+            HttpPut httpput) {
         if (isTraceEnabled()) {
-            trace(retrieve_get_response, httpget, response, parent);
+            trace(retrieve_get_response, httpput, response, parent);
         } else {
             debug(retrieve_response, response, parent);
         }

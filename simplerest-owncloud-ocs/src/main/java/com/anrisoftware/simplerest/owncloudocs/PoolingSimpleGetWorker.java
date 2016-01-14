@@ -9,19 +9,19 @@ import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
 import com.anrisoftware.simplerest.owncloud.OwncloudStatusMessage;
 import com.google.inject.assistedinject.Assisted;
 
-class StatusPoolingSimpleGetWorker extends
+class PoolingSimpleGetWorker extends
         AbstractPoolingSimpleGetWorker<OwncloudStatusMessage> {
 
-    interface StatusPoolingSimpleGetWorkerFactory {
+    interface PoolingSimpleGetWorkerFactory {
 
-        StatusPoolingSimpleGetWorker create(Object parent, URI requestUri,
+        PoolingSimpleGetWorker create(Object parent, URI requestUri,
                 OwncloudAccount account);
 
     }
 
     @Inject
-    StatusPoolingSimpleGetWorker(@Assisted Object parent,
-            @Assisted URI requestUri, @Assisted OwncloudAccount account,
+    PoolingSimpleGetWorker(@Assisted Object parent, @Assisted URI requestUri,
+            @Assisted OwncloudAccount account,
             ParseStatusResponse parseResponse,
             NopParseResponse parseErrorResponse) {
         super(parent, requestUri, parseResponse, parseErrorResponse);
@@ -30,6 +30,5 @@ class StatusPoolingSimpleGetWorker extends
         addHeader("Content-Type",
                 "application/x-www-form-urlencoded; charset=utf-8");
     }
-
 
 }

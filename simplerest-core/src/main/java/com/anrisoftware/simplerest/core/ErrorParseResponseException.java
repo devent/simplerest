@@ -14,7 +14,7 @@ public class ErrorParseResponseException extends SimpleRestException {
 
     public ErrorParseResponseException(HttpResponse response, Exception cause) {
         super(MESSAGE, cause);
-        addContextValue("HTTP-response", response);
+        addContextValue("response", response);
     }
 
 }

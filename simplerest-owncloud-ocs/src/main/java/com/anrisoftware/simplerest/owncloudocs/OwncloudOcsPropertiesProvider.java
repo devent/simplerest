@@ -32,4 +32,8 @@ public final class OwncloudOcsPropertiesProvider extends
     public String getOwncloudStatusPath() {
         return get().getProperty("status_path");
     }
+
+    public String getOwncloudWebdavPath() {
+        return get().getProperty("webdav_path");
+    }
 }

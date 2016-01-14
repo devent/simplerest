@@ -5,23 +5,19 @@
  */
 package com.anrisoftware.simplerest.core;
 
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.HttpRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 @SuppressWarnings("serial")
 public class ErrorExecuteRequestException extends SimpleRestException {
 
-    private static final String HTTP_REQUEST_LABEL = "HTTP-request";
-
-    private static final String HTTP_CLIENT_LABEL = "HTTP-client";
-
     private static final String MESSAGE = "Error execute request";
 
-    public ErrorExecuteRequestException(CloseableHttpClient httpclient, HttpGet httpget,
-            Exception cause) {
+    public ErrorExecuteRequestException(CloseableHttpClient httpclient,
+            HttpRequest request, Exception cause) {
         super(MESSAGE, cause);
-        addContextValue(HTTP_CLIENT_LABEL, httpclient);
-        addContextValue(HTTP_REQUEST_LABEL, httpget);
+        addContextValue("client", httpclient);
+        addContextValue("request", request);
     }
 
 }

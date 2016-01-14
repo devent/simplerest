@@ -5,18 +5,18 @@
  */
 package com.anrisoftware.simplerest.core;
 
+import org.apache.http.HttpRequest;
 import org.apache.http.StatusLine;
-import org.apache.http.client.methods.HttpGet;
 
 @SuppressWarnings("serial")
 public final class BadResponseException extends SimpleRestException {
 
     private static final String MESSAGE = "Bad response";
 
-    public BadResponseException(HttpGet httpget, StatusLine statusLine,
+    public BadResponseException(HttpRequest request, StatusLine statusLine,
             Message message) {
         super(MESSAGE);
-        addContextValue("HTTP-GET", httpget);
+        addContextValue("request", request);
         addContextValue("response", statusLine);
         addContextValue("message", message);
     }

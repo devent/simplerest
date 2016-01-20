@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.globalpom</groupId>
 		<artifactId>globalpom-groovy</artifactId>
-		<version>1.26</version>
+		<version>2.0</version>
 		<relativePath />
 	</parent>
 
@@ -18,6 +18,10 @@
 	<inceptionYear>2016</inceptionYear>
 	<description>Manages the meta-information and dependencies of the project.</description>
 	<url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
+
+	<properties>
+		<project.custom.year>${project.inceptionYear}</project.custom.year>
+	</properties>
 
 	<issueManagement>
 		<system>Redmine</system>
@@ -73,13 +77,20 @@
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>1.26</version>
+				<version>2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.anrisoftware.globalpom</groupId>
 				<artifactId>globalpom-log</artifactId>
-				<version>1.21</version>
+				<version>2.0</version>
 			</dependency>
+
+            <!-- propertiesutils -->
+            <dependency>
+                <groupId>com.anrisoftware.propertiesutils</groupId>
+                <artifactId>propertiesutils-contextproperties</artifactId>
+                <version>2.0</version>
+            </dependency>
 
 			<!-- REST Request -->
 			<dependency>

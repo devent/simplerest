@@ -42,11 +42,17 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
-		<!-- globalpom modules -->
+		<!-- globalpom -->
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-log</artifactId>
 		</dependency>
+
+        <!-- propertiesutils -->
+        <dependency>
+            <groupId>com.anrisoftware.propertiesutils</groupId>
+            <artifactId>propertiesutils-contextproperties</artifactId>
+        </dependency>
 
 		<!-- jackson modules -->
 		<dependency>
@@ -83,10 +89,9 @@
 			<groupId>net.sourceforge.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.anrisoftware.propertiesutils</groupId>
-			<artifactId>propertiesutils-contextproperties</artifactId>
-			<version>1.14-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
 	</dependencies>
 </project>

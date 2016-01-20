@@ -1,7 +1,20 @@
 /*
- * Copyright 2015 Erwin Müller <erwin.mueller@deventm.org>
+ * Copyright 2016 Erwin Müller <erwin.mueller@deventm.org>
  *
- * This file is part of forecast-forex-oanda. All rights reserved.
+ * This file is part of simplerest-owncloud-ocs.
+ *
+ * simplerest-owncloud-ocs is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * simplerest-owncloud-ocs is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with simplerest-owncloud-ocs. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.anrisoftware.simplerest.utils
 
@@ -35,17 +48,9 @@ import com.google.inject.Injector
 @Slf4j
 class Dependencies {
 
-    static final String OWNCLOUD_ACCOUNT_USERNAME_PROPERTY = 'user.owncloud.account.username'
+    static final String OWNCLOUD_ACCOUNT_PROPERTY = 'user.owncloud.account'
 
-    static final String OWNCLOUD_ACCOUNT_PASSWORD_PROPERTY = 'user.owncloud.account.password'
-
-    static final String OWNCLOUD_BASE_URI_PROPERTY = 'user.owncloud.base_uri'
-
-    static String accountUsername = System.getProperty(OWNCLOUD_ACCOUNT_USERNAME_PROPERTY)
-
-    static String accountPassword = System.getProperty(OWNCLOUD_ACCOUNT_PASSWORD_PROPERTY)
-
-    static String baseUri = System.getProperty(OWNCLOUD_BASE_URI_PROPERTY)
+    static String account = System.getProperty(OWNCLOUD_ACCOUNT_PROPERTY)
 
     static Injector injector = Guice.createInjector(
     new RestOwncloudModule(),
@@ -70,14 +75,11 @@ class Dependencies {
     OwncloudOcsCreateShareFactory createShareFactory
 
     OwncloudAccount createAccount() {
-        if (StringUtils.isBlank(accountUsername)) {
-            log.info "No Owncloud account set in {} and {} and {}.", OWNCLOUD_ACCOUNT_USERNAME_PROPERTY, OWNCLOUD_ACCOUNT_PASSWORD_PROPERTY, OWNCLOUD_BASE_URI_PROPERTY
+        if (StringUtils.isBlank(account)) {
+            log.info "No Owncloud account set in {} and {} and {}.", OWNCLOUD_ACCOUNT_PROPERTY
             return null
         } else {
-            def account = accountFactory.create()
-            account.setUser accountUsername
-            account.setPassword accountPassword
-            account.setBaseUri new URI(baseUri)
+            def account = accountFactory.create(new URI(account))
             return account
         }
     }

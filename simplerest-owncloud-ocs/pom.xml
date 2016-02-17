@@ -48,11 +48,11 @@
 			<artifactId>globalpom-log</artifactId>
 		</dependency>
 
-        <!-- propertiesutils -->
-        <dependency>
-            <groupId>com.anrisoftware.propertiesutils</groupId>
-            <artifactId>propertiesutils-contextproperties</artifactId>
-        </dependency>
+		<!-- propertiesutils -->
+		<dependency>
+			<groupId>com.anrisoftware.propertiesutils</groupId>
+			<artifactId>propertiesutils-contextproperties</artifactId>
+		</dependency>
 
 		<!-- jackson modules -->
 		<dependency>
@@ -89,9 +89,25 @@
 			<groupId>net.sourceforge.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<systemPropertyVariables>
+						<user.owncloud.account>${user.owncloud.account}</user.owncloud.account>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

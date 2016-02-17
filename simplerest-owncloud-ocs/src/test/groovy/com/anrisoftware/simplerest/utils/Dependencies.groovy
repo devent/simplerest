@@ -76,7 +76,7 @@ class Dependencies {
 
     OwncloudAccount createAccount() {
         if (StringUtils.isBlank(account)) {
-            log.info "No Owncloud account set in {} and {} and {}.", OWNCLOUD_ACCOUNT_PROPERTY
+            log.info "No Owncloud account set in '{}'", OWNCLOUD_ACCOUNT_PROPERTY
             return null
         } else {
             def account = accountFactory.create(new URI(account))

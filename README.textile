@@ -71,7 +71,7 @@ void run() {
 On success, the following information is returned. 
 
 - getInstalled(), := true if the server is installed;
-- getVersionString(), := 
+- getVersionString(), := the version of the server;
 - getVersion(), := the version of the server;
 - getEdition(), := the edition of the server.
 

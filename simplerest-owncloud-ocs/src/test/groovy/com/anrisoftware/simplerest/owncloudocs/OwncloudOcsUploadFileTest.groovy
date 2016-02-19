@@ -21,6 +21,7 @@ package com.anrisoftware.simplerest.owncloudocs
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.simplerest.utils.Dependencies.*
 import static com.google.inject.Guice.createInjector
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
 import org.apache.commons.io.FileUtils
@@ -39,6 +40,7 @@ import com.anrisoftware.simplerest.utils.Dependencies
  * @since 1.0
  */
 @Slf4j
+@CompileStatic
 class OwncloudOcsUploadFileTest {
 
     @Test
@@ -50,8 +52,8 @@ class OwncloudOcsUploadFileTest {
         def file = folder.newFile "test.txt"
         def remotePath = 'test/test.txt'
         FileUtils.write file, 'Start>>\nTest\n<<End\n'
-        def status = dep.uploadFileFactory.create(account, file, remotePath, ContentType.create('text/plain', 'UTF-8'))
-        status.call()
+        def upload = dep.uploadFileFactory.create(account, file, remotePath, ContentType.create('text/plain', 'UTF-8'))
+        upload.call()
     }
 
     @Rule

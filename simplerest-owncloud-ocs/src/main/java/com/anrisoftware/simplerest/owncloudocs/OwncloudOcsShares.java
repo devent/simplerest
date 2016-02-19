@@ -34,10 +34,24 @@ import com.anrisoftware.simplerest.owncloudocs.SimpleGetWorker.SimpleGetWorkerFa
 import com.google.inject.assistedinject.Assisted;
 
 /**
+ * <p>
  * Retrieves information about shares.
+ * </p>
+ *
+ * <p>
+ * Usage example
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * OwncloudOcsSharesFactory sharesFactory;
+ * OwncloudOcsShares shares = sharesFactory.create(account);
+ * SharesMessage message = shares.call();
+ * </pre>
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public class OwncloudOcsShares implements OwncloudShares {
 

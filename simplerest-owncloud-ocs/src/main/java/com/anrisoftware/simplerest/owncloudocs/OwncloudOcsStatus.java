@@ -29,8 +29,35 @@ import com.anrisoftware.simplerest.owncloud.OwncloudStatusMessage;
 import com.anrisoftware.simplerest.owncloudocs.StatusSimpleGetWorker.StatusSimpleGetWorkerFactory;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * <p>
+ * Requests the status of the Owncloud server.
+ * </p>
+ *
+ * <p>
+ * Usage example
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * OwncloudOcsStatusFactory statusFactory;
+ * status = statusFactory.create(account);
+ * status.call();
+ * status.getInstalled()
+ * </pre>
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class OwncloudOcsStatus extends AbstractOwncloudOcsStatus {
 
+    /**
+     * Factory to create the status request.
+     *
+     * @author Erwin Müller, erwin.mueller@deventm.de
+     * @since 0.1
+     */
     public interface OwncloudOcsStatusFactory {
 
         OwncloudStatus create(OwncloudAccount account);

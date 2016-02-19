@@ -36,6 +36,29 @@ import com.anrisoftware.simplerest.owncloud.OwncloudUploadFile;
 import com.anrisoftware.simplerest.owncloudocs.SimplePutWorker.SimplePutWorkerFactory;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * <p>
+ * Uploads a file to the Owncloud server.
+ * </p>
+ *
+ * <p>
+ * Usage example
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * OwncloudOcsUploadFileFactory uploadFileFactory;
+ * OwncloudUploadFile upload;
+ * file = new File("test.txt");
+ * remotePath = "Public/test.txt";
+ * upload = uploadFileFactory.create(account, file, remotePath, ContentType.create('text/plain', 'UTF-8'))
+ * upload.call();
+ * </pre>
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class OwncloudOcsUploadFile implements OwncloudUploadFile {
 
     public interface OwncloudOcsUploadFileFactory {

@@ -21,6 +21,7 @@ package com.anrisoftware.simplerest.owncloudocs
 import static com.anrisoftware.globalpom.utils.TestUtils.*
 import static com.anrisoftware.simplerest.utils.Dependencies.*
 import static com.google.inject.Guice.createInjector
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
 import org.apache.http.impl.client.HttpClients
@@ -37,6 +38,7 @@ import com.anrisoftware.simplerest.utils.Dependencies
  * @since 1.0
  */
 @Slf4j
+@CompileStatic
 class OwncloudOcsPoolingStatusTest {
 
     @Test
@@ -47,9 +49,15 @@ class OwncloudOcsPoolingStatusTest {
         }
         def cm = new PoolingHttpClientConnectionManager()
         def httpclient = HttpClients.custom().setConnectionManager(cm).build();
-        def status = dep.poolingStatusFactory.create(account, httpclient)
-        status.call()
-        assert status.installed == true
+        List<Thread> threads = []
+        (0..3).each {
+            threads << Thread.start {
+                def status = dep.poolingStatusFactory.create(account, httpclient)
+                status.call()
+                assert status.installed == true
+            }
+        }
+        threads.each { it.join() }
     }
 
     static Dependencies dep

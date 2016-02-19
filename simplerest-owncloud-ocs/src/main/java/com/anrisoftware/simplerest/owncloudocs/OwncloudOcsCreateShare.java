@@ -40,10 +40,26 @@ import com.anrisoftware.simplerest.owncloudocs.SimplePostWorker.SimplePostWorker
 import com.google.inject.assistedinject.Assisted;
 
 /**
+ * <p>
  * Creates a new share.
+ * </p>
+ *
+ * <p>
+ * Usage example
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * OwncloudOcsCreateShareFactory createShareFactory;
+ * String path = "Public/test.txt";
+ * ShareType type = ShareType.link;
+ * OwncloudOcsCreateShare share = createShareFactory.create(account, path, type, shareWith, publicUpload, password, permissions);
+ * ShareResultMessage message = share.call();
+ * </pre>
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public class OwncloudOcsCreateShare implements OwncloudCreateShare {
 

@@ -1,0 +1,162 @@
+<img src="http://www.mueller-public.de/wp-content/uploads/2016/02/simpelrest-logo.png" alt="simpelrest-logo" width="484" height="86" class="alignleft size-full wp-image-575" />
+
+h1. Introduction
+
+The library provides a high level API to the REST interfaces of various services.
+
+<hr/>
+
+* "simpleREST Documentation":http://www.mueller-public.de/wp-content/uploads/2016/02/simplerest_docu_en-r1.pdf
+* "Source code":https://anrisoftware.com/l/55
+* git@anrisoftware.com:simplerest.git
+* "Source code (Github)":https://github.com/devent/simplerest
+* git@github.com:devent/simplerest.git
+* "Roadmap":https://anrisoftware.com/l/56
+* "Issues":https://anrisoftware.com/l/57
+
+h2. License
+
+The simpleREST library is released under the GNU Lesser General Public License "LGPLv3 license":http://www.gnu.org/licenses/
+
+h1. Owncloud OCS
+
+h2. Overview
+
+* "Report":https://anrisoftware.com/l/5a
+* "Download":https://anrisoftware.com/l/58
+
+Access to the Owncloud OCS REST API functions,
+
+- status, := requests the status of the Owncloud server;
+- upload, := uploads a file to the Owncloud server;
+- shares, := retrieves information about shares;
+- create share, := creates a new share;
+
+h2. OwncloudStatus
+
+Requests the status of the Owncloud server. Use the factories @OwncloudOcsStatusFactory@ or @OwncloudOcsPoolingStatusFactory@ to create the request and call the @call()@ method to do the request. The factories require the following arguments.
+
+@OwncloudOcsStatusFactory#create(OwncloudAccount account)@
+
+- account, := the Owncloud account;
+
+<pre lang="Java" title="Retrieving the status using OwncloudOcsStatusFactory">
+DefaultOwncloudAccountFactory accountFactory;
+account = accountFactory.create(new URI(account))
+OwncloudOcsStatusFactory statusFactory;
+status = statusFactory.create(account);
+status.call();
+status.getInstalled();
+</pre>
+
+@OwncloudOcsPoolingStatusFactory#create(OwncloudAccount account, CloseableHttpClient httpClient)@
+
+- account := the Owncloud account;
+- httpClient := the pooled client;
+
+<pre lang="Java" title="Retrieving the status using OwncloudOcsPoolingStatusFactory">
+DefaultOwncloudAccountFactory accountFactory;
+account = accountFactory.create(new URI(account))
+cm = new PoolingHttpClientConnectionManager();
+httpclient = HttpClients.custom().setConnectionManager(cm).build();
+
+void run() {
+    OwncloudOcsPoolingStatusFactory poolingStatusFactory;
+    status = poolingStatusFactory.create(account, httpclient);
+    status.call();
+    status.getInstalled()
+}
+</pre>
+
+On success, the following information is returned. 
+
+- getInstalled(), := true if the server is installed;
+- getVersionString(), := 
+- getVersion(), := the version of the server;
+- getEdition(), := the edition of the server.
+
+h2. OwncloudUploadFile
+
+Use the factories @OwncloudOcsUploadFileFactory@ to create the request and call the @call()@ method to do the request to upload the file. The factories require the following arguments.
+
+@OwncloudOcsUploadFileFactory#create(OwncloudAccount account, File file, String remotePath, ContentType contentType)@
+
+
+- account, := the Owncloud account;
+- file, := the file to upload;
+- remotePath := the destination path;
+- contentType := the content type of the file.
+
+
+Optionally the following parameters can be set.
+
+
+- setRequiredEtag() := sets the e-tag;
+
+
+<pre lang="Java" title="Upload a file using OwncloudOcsUploadFileFactory">
+DefaultOwncloudAccountFactory accountFactory;
+account = accountFactory.create(new URI(account))
+OwncloudOcsUploadFileFactory uploadFileFactory;
+OwncloudUploadFile upload;
+file = new File("test.txt");
+remotePath = "Public/test.txt";
+upload = uploadFileFactory.create(account, file, remotePath, ContentType.create('text/plain', 'UTF-8'))
+upload.call();
+</pre>
+
+h2. OwncloudShares
+
+Use the factories @OwncloudOcsSharesFactory@ to create the request and call the @call()@ method to do the request to retrieve information about shares. The factories require the following arguments.
+
+@OwncloudOcsSharesFactory#create(OwncloudAccount account)@
+
+
+- account, := the Owncloud account;
+
+
+Optionally the following parameters can be set.
+
+
+- setPath() := sets path of the folder or file;
+- setReshares() := sets to true to return re-shares;
+- setSubfiles() := sets to true to return sub-files;
+
+
+<pre lang="Java" title="Retrieves information about shares using OwncloudOcsSharesFactory">
+DefaultOwncloudAccountFactory accountFactory;
+account = accountFactory.create(new URI(account))
+OwncloudOcsSharesFactory sharesFactory;
+OwncloudOcsShares shares = sharesFactory.create(account);
+SharesMessage message = shares.call();
+</pre>
+
+On success, the @SharesMessage@ information is returned containing the @ShareData@ for each share. 
+
+h2. OwncloudCreateShare
+
+Use the factories @OwncloudOcsCreateShareFactory@ to create the request and call the @call()@ method to do the request and to create the share. The factories require the following arguments.
+
+@OwncloudOcsCreateShareFactory#create(OwncloudAccount account, String path, ShareType type, String shareWith, Boolean publicUpload, String password, Integer permissions)@
+
+
+- account, := the Owncloud account;
+- path, := the path to the folder or file;
+- type, := type of the share;
+- shareWith, := the user or group name, can be null;
+- publicUpload, := set to true to allow public upload, can be null;
+- password, := set the password of the share, can be null;
+- permissions, := the permissions of the share, can be null;
+
+
+<pre lang="Java" title="Creates a new share using OwncloudOcsCreateShareFactory">
+DefaultOwncloudAccountFactory accountFactory;
+account = accountFactory.create(new URI(account))
+OwncloudOcsCreateShareFactory createShareFactory;
+String path = "Public/test.txt";
+ShareType type = ShareType.link;
+OwncloudOcsCreateShare share = createShareFactory.create(account, path, type, shareWith, publicUpload, password, permissions);
+ShareResultMessage message = share.call();
+</pre>
+
+On success, the @ShareResultMessage@ information is returned containing the @ShareResult@ of the share. 

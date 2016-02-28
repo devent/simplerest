@@ -18,6 +18,12 @@
  */
 package com.anrisoftware.simplerest.ocs;
 
+/**
+ * Marker for Owncloud data.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public interface OwncloudData {
 
 }

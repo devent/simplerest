@@ -20,7 +20,10 @@ package com.anrisoftware.simplerest.owncloudocs;
 
 import java.net.URI;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.anrisoftware.simplerest.core.AbstractSimplePostWorker;
 import com.anrisoftware.simplerest.core.Message;
@@ -32,7 +35,7 @@ import com.google.inject.assistedinject.Assisted;
  * Makes a POST request.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 @SuppressWarnings("rawtypes")
 class SimplePostWorker extends AbstractSimplePostWorker {
@@ -40,9 +43,10 @@ class SimplePostWorker extends AbstractSimplePostWorker {
     interface SimplePostWorkerFactory {
 
         SimplePostWorker create(
-                Object parent,
-                URI requestUri,
-                OwncloudAccount account,
+                @Assisted Object parent,
+                @Assisted URI requestUri,
+                @Assisted OwncloudAccount account,
+                @Assisted @Nullable CloseableHttpClient httpClient,
                 @Assisted("parseResponse") ParseResponse<?> parseResponse,
                 @Assisted("parseErrorResponse") ParseResponse<? extends Message> parseErrorResponse);
 
@@ -54,9 +58,10 @@ class SimplePostWorker extends AbstractSimplePostWorker {
             @Assisted Object parent,
             @Assisted URI requestUri,
             @Assisted OwncloudAccount account,
+            @Assisted @Nullable CloseableHttpClient httpClient,
             @Assisted("parseResponse") ParseResponse<?> parseResponse,
             @Assisted("parseErrorResponse") ParseResponse<? extends Message> parseErrorResponse) {
-        super(parent, requestUri, parseResponse, parseErrorResponse);
+        super(parent, requestUri, httpClient, parseResponse, parseErrorResponse);
         setAccount(account);
         setCompressed(true);
         addHeader("Content-Type",

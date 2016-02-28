@@ -22,7 +22,7 @@ package com.anrisoftware.simplerest.owncloud;
  * Share type.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public enum ShareType {
 

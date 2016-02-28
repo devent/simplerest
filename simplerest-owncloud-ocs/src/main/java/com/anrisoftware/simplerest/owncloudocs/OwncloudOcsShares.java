@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import javax.inject.Inject;
 
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.anrisoftware.simplerest.core.SimpleRestException;
 import com.anrisoftware.simplerest.ocs.DefaultSharesMessage;
@@ -32,6 +33,7 @@ import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
 import com.anrisoftware.simplerest.owncloud.OwncloudShares;
 import com.anrisoftware.simplerest.owncloudocs.SimpleGetWorker.SimpleGetWorkerFactory;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * <p>
@@ -50,6 +52,23 @@ import com.google.inject.assistedinject.Assisted;
  * SharesMessage message = shares.call();
  * </pre>
  *
+ * <p>
+ * Usage example using pooling HTTP client.
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+ * CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(cm).build();
+ * 
+ * public void run() {
+ *      OwncloudOcsSharesFactory sharesFactory;
+ *      OwncloudOcsShares shares = sharesFactory.create(account, httpclient);
+ *      SharesMessage message = shares.call();
+ * }
+ * </pre>
+ *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 0.1
  */
@@ -57,7 +76,17 @@ public class OwncloudOcsShares implements OwncloudShares {
 
     public interface OwncloudOcsSharesFactory {
 
-        OwncloudOcsShares create(OwncloudAccount account);
+        /**
+         * Creates the shares information.
+         */
+        OwncloudOcsShares create(@Assisted OwncloudAccount account);
+
+        /**
+         * Creates the shares information using the specified pooling HTTP
+         * client.
+         */
+        OwncloudOcsShares create(@Assisted OwncloudAccount account,
+                @Assisted CloseableHttpClient httpClient);
 
     }
 
@@ -75,18 +104,31 @@ public class OwncloudOcsShares implements OwncloudShares {
     @Inject
     private NopParseResponse nopParseResponse;
 
+    private CloseableHttpClient httpClient;
+
     private String path;
 
     private Boolean reshares;
 
     private Boolean subfiles;
 
-    @Inject
+    @AssistedInject
     OwncloudOcsShares(@Assisted OwncloudAccount account) {
+        this(account, null);
+    }
+
+    @AssistedInject
+    OwncloudOcsShares(@Assisted OwncloudAccount account,
+            @Assisted CloseableHttpClient httpClient) {
         this.account = account;
+        this.httpClient = httpClient;
         this.path = null;
         this.reshares = null;
         this.subfiles = null;
+    }
+
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     @Override
@@ -117,7 +159,8 @@ public class OwncloudOcsShares implements OwncloudShares {
     private DefaultSharesMessage sendRequest() throws SimpleRestException {
         URI requestUri = getRequestURI();
         SimpleGetWorker requestWorker = simpleGetWorkerFactory.create(this,
-                requestUri, getAccount(), parseResponse, nopParseResponse);
+                requestUri, getAccount(), httpClient, parseResponse,
+                nopParseResponse);
         DefaultSharesMessage data = (DefaultSharesMessage) requestWorker
                 .retrieveData();
         return data;

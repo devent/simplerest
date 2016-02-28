@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.anrisoftware.simplerest.core.SimpleRestException;
@@ -38,6 +39,7 @@ import com.anrisoftware.simplerest.owncloud.OwncloudCreateShare;
 import com.anrisoftware.simplerest.owncloud.ShareType;
 import com.anrisoftware.simplerest.owncloudocs.SimplePostWorker.SimplePostWorkerFactory;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * <p>
@@ -58,6 +60,25 @@ import com.google.inject.assistedinject.Assisted;
  * ShareResultMessage message = share.call();
  * </pre>
  *
+ * <p>
+ * Usage example using pooling HTTP client.
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+ * CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(cm).build();
+ * 
+ * public void run() {
+ *      OwncloudOcsCreateShareFactory createShareFactory;
+ *      String path = "Public/test.txt";
+ *      ShareType type = ShareType.link;
+ *      OwncloudOcsCreateShare share = createShareFactory.create(account, path, type, shareWith, publicUpload, password, permissions, httpclient);
+ *      ShareResultMessage message = share.call();
+ * }
+ * </pre>
+ *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 0.1
  */
@@ -65,28 +86,30 @@ public class OwncloudOcsCreateShare implements OwncloudCreateShare {
 
     public interface OwncloudOcsCreateShareFactory {
 
-        OwncloudOcsCreateShare create(OwncloudAccount account,
-                @Assisted("path") String path, ShareType type,
+        /**
+         * Creates the new share.
+         */
+        OwncloudOcsCreateShare create(@Assisted OwncloudAccount account,
+                @Assisted("path") String path, @Assisted ShareType type,
                 @Nullable @Assisted("shareWith") String shareWith,
                 @Nullable Boolean publicUpload,
                 @Nullable @Assisted("password") String password,
                 @Nullable Integer permissions);
 
+        /**
+         * Creates the new share using the specified pooling HTTP client.
+         */
+        OwncloudOcsCreateShare create(@Assisted OwncloudAccount account,
+                @Assisted("path") String path, @Assisted ShareType type,
+                @Nullable @Assisted("shareWith") String shareWith,
+                @Nullable Boolean publicUpload,
+                @Nullable @Assisted("password") String password,
+                @Nullable Integer permissions,
+                @Assisted @Nullable CloseableHttpClient httpClient);
+
     }
 
     private final OwncloudAccount account;
-
-    @Inject
-    private OwncloudOcsPropertiesProvider propertiesProvider;
-
-    @Inject
-    private SimplePostWorkerFactory simpleWorkerFactory;
-
-    @Inject
-    private ShareResultParseJsonResponse parseResponse;
-
-    @Inject
-    private NopParseResponse nopParseResponse;
 
     private final String path;
 
@@ -101,12 +124,39 @@ public class OwncloudOcsCreateShare implements OwncloudCreateShare {
     private final Integer permissions;
 
     @Inject
+    private OwncloudOcsPropertiesProvider propertiesProvider;
+
+    @Inject
+    private SimplePostWorkerFactory simpleWorkerFactory;
+
+    @Inject
+    private ShareResultParseJsonResponse parseResponse;
+
+    @Inject
+    private NopParseResponse nopParseResponse;
+
+    private CloseableHttpClient httpClient;
+
+    @AssistedInject
     OwncloudOcsCreateShare(@Assisted OwncloudAccount account,
             @Assisted("path") String path, @Assisted ShareType type,
             @Assisted("shareWith") @Nullable String shareWith,
             @Assisted @Nullable Boolean publicUpload,
             @Assisted("password") @Nullable String password,
             @Assisted @Nullable Integer permissions) {
+        this(account, path, type, shareWith, publicUpload, password,
+                permissions, null);
+    }
+
+    @AssistedInject
+    OwncloudOcsCreateShare(@Assisted OwncloudAccount account,
+            @Assisted("path") String path, @Assisted ShareType type,
+            @Assisted("shareWith") @Nullable String shareWith,
+            @Assisted @Nullable Boolean publicUpload,
+            @Assisted("password") @Nullable String password,
+            @Assisted @Nullable Integer permissions,
+            @Assisted @Nullable CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
         this.account = account;
         this.path = path;
         this.type = type;
@@ -114,6 +164,10 @@ public class OwncloudOcsCreateShare implements OwncloudCreateShare {
         this.publicUpload = publicUpload;
         this.password = password;
         this.permissions = permissions;
+    }
+
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     @Override
@@ -159,7 +213,8 @@ public class OwncloudOcsCreateShare implements OwncloudCreateShare {
     private ShareResultMessage sendRequest() throws SimpleRestException {
         URI requestUri = getRequestURI();
         SimplePostWorker requestWorker = simpleWorkerFactory.create(this,
-                requestUri, getAccount(), parseResponse, nopParseResponse);
+                requestUri, getAccount(), httpClient, parseResponse,
+                nopParseResponse);
         requestWorker.addHeader("OCS-APIREQUEST", "true");
         List<NameValuePair> postParameters = createPostParameters();
         @SuppressWarnings("unchecked")

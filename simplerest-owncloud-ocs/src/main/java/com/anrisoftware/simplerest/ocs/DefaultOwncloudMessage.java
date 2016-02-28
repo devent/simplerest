@@ -23,6 +23,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * OCS response message.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class DefaultOwncloudMessage<T extends OwncloudData> implements
         OwncloudMessage<T> {
 

@@ -43,10 +43,27 @@ import org.apache.http.impl.client.CloseableHttpClient;
 public abstract class AbstractSimplePostWorker<T> extends
         AbstractSimpleWorker<T> {
 
+    /**
+     *
+     * @param parent
+     *            the worker {@link Object} parent.
+     *
+     * @param requestUri
+     *            the requests {@link URI} URI.
+     *
+     * @param httpClient
+     *            the {@link CloseableHttpClient} HTTP client or {@code null}.
+     *
+     * @param parseResponse
+     *            the {@link ParseResponse} to parse the response.
+     *
+     * @param parseErrorResponse
+     *            the {@link ParseResponse} to parse the error response.
+     */
     protected AbstractSimplePostWorker(Object parent, URI requestUri,
-            ParseResponse<T> parseResponse,
+            CloseableHttpClient httpClient, ParseResponse<T> parseResponse,
             ParseResponse<? extends Message> parseErrorResponse) {
-        super(parent, requestUri, parseResponse, parseErrorResponse);
+        super(parent, requestUri, httpClient, parseResponse, parseErrorResponse);
     }
 
     /**

@@ -24,7 +24,7 @@ import com.anrisoftware.simplerest.core.Message;
  * Status message of the Owncloud installation.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public interface OwncloudStatusMessage extends Message {
 

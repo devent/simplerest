@@ -19,24 +19,30 @@
 package com.anrisoftware.simplerest.owncloud
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.simplerest.utils.Dependencies.injector
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
-import org.junit.BeforeClass
+import javax.inject.Inject
+
+import org.junit.Before
 import org.junit.Test
 
-import com.anrisoftware.simplerest.utils.Dependencies
+import com.anrisoftware.simplerest.owncloud.DefaultOwncloudAccount.DefaultOwncloudAccountFactory
+import com.anrisoftware.simplerest.owncloudocs.RestOwncloudOcsModule
+import com.google.inject.Guice
 
 /**
  * @see DefaultOwncloudAccount
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
-@CompileStatic
 @Slf4j
+@CompileStatic
 class DefaultOwncloudAccountTest {
+
+    @Inject
+    DefaultOwncloudAccountFactory accountFactory
 
     @Test
     void "account from URI"() {
@@ -50,18 +56,16 @@ class DefaultOwncloudAccountTest {
         ]
         testCases.eachWithIndex { Map test, int k ->
             log.info '{}. case: {}', k, test
-            def account = dep.accountFactory.create test.uri as URI
+            def account = accountFactory.create test.uri as URI
             assert account.user == test.expectedUser
             assert account.password == test.expectedPassword
             assert account.baseUri.toString() == test.expectedBaseURI
         }
     }
 
-    static Dependencies dep
-
-    @BeforeClass
-    static void createFactory() {
+    @Before
+    void setupTest() {
         toStringStyle
-        this.dep = injector.getInstance Dependencies
+        Guice.createInjector(new RestOwncloudModule(), new RestOwncloudOcsModule()).injectMembers(this)
     }
 }

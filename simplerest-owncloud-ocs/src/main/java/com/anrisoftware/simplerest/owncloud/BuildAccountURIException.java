@@ -16,34 +16,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with simplerest-owncloud-ocs. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.anrisoftware.simplerest.ocs;
+package com.anrisoftware.simplerest.owncloud;
 
-/**
- * Share result.
- *
- * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 0.1
- */
-public interface ShareResult extends OwncloudData {
+import java.net.URISyntaxException;
 
-    /**
-     * Returns the share identifier.
-     *
-     * @return the {@link Integer} identifier.
-     */
-    int getId();
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
-    /**
-     * Returns the shared link if the share was a public link.
-     *
-     * @return the {@link String} URL of the link or {@code null}.
-     */
-    String getUrl();
+@SuppressWarnings("serial")
+public class BuildAccountURIException extends ContextedRuntimeException {
 
-    /**
-     * Returns the share token if the share was a public link.
-     *
-     * @return the {@link String} token or {@code null}.
-     */
-    String getToken();
+    public BuildAccountURIException(URISyntaxException e, String string) {
+        super("Invalid account URI", e);
+        addContextValue("uri", string);
+    }
+
+    public BuildAccountURIException(URISyntaxException e) {
+        super("Invalid account URI", e);
+    }
+
 }

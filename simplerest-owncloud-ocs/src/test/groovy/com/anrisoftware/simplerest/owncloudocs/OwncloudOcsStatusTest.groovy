@@ -19,40 +19,54 @@
 package com.anrisoftware.simplerest.owncloudocs
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.simplerest.utils.Dependencies.*
-import static com.google.inject.Guice.createInjector
+import static org.junit.Assume.*
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
+import javax.inject.Inject
+
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.simplerest.utils.Dependencies
+import com.anrisoftware.simplerest.owncloud.DefaultOwncloudAccountFromEnv
+import com.anrisoftware.simplerest.owncloud.RestOwncloudModule
+import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsStatus.OwncloudOcsStatusFactory
+import com.google.inject.Guice
 
 /**
  * @see OwncloudOcsStatus
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 @Slf4j
+@CompileStatic
 class OwncloudOcsStatusTest {
+
+    @Inject
+    DefaultOwncloudAccountFromEnv account
+
+    @Inject
+    OwncloudOcsStatusFactory statusFactory
 
     @Test
     void "retrieve status"() {
-        def account = dep.createAccount()
-        if (!account) {
-            return
-        }
-        def status = dep.statusFactory.create(account)
+        def status = statusFactory.create(account.build())
         status.call()
         assert status.installed == true
     }
 
-    static Dependencies dep
+    @Before
+    void setupTest() {
+        toStringStyle
+        Guice.createInjector(new RestOwncloudModule(), new RestOwncloudOcsModule()).injectMembers(this)
+    }
 
     @BeforeClass
-    static void createFactory() {
-        toStringStyle
-        this.dep = injector.getInstance Dependencies
+    static void checkOwncloud() {
+        assumeTrue 'Could not reach anrisoftware.com', InetAddress.getByName('anrisoftware.com') != null
+        assumeTrue "No Owncloud account variables set: ${DefaultOwncloudAccountFromEnv.OWNCLOUD_URI_PROPERTY}",
+                DefaultOwncloudAccountFromEnv.haveOwncloudAccountEnv()
     }
 }

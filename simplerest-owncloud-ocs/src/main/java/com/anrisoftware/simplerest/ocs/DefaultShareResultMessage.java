@@ -22,6 +22,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * Create share result message.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class DefaultShareResultMessage implements ShareResultMessage {
 
     private final DefaultOwncloudMessage<ShareResult> message;

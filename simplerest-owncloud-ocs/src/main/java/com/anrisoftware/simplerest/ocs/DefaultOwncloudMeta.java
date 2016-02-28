@@ -20,6 +20,12 @@ package com.anrisoftware.simplerest.ocs;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * Owncloud response information.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class DefaultOwncloudMeta implements OwncloudMeta {
 
     private String status;

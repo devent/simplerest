@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.simplerest</groupId>
 		<artifactId>simplerest-parent</artifactId>
-		<version>0.1</version>
+		<version>0.2-SNAPSHOT</version>
 		<relativePath>../simplerest-parent</relativePath>
 	</parent>
 
@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.simplerest</groupId>
 			<artifactId>simplerest-core</artifactId>
-			<version>0.1</version>
+			<version>0.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- globalpom -->
@@ -103,7 +103,7 @@
 				<version>2.19.1</version>
 				<configuration>
 					<systemPropertyVariables>
-						<user.owncloud.account>${user.owncloud.account}</user.owncloud.account>
+						<user.owncloud.uri>${user.owncloud.uri}</user.owncloud.uri>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

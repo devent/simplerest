@@ -26,7 +26,7 @@ import com.anrisoftware.simplerest.core.SimpleRestException;
  * Requests the status of the Owncloud server.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public interface OwncloudStatus extends Callable<OwncloudStatus> {
 

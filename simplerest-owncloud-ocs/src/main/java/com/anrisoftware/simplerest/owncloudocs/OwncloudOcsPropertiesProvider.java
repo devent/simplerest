@@ -28,7 +28,7 @@ import com.anrisoftware.propertiesutils.AbstractContextPropertiesProvider;
  * Provides Owncloud OCS properties from {@code "/owncloud_ocs.properties".}
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 @SuppressWarnings("serial")
 @Singleton

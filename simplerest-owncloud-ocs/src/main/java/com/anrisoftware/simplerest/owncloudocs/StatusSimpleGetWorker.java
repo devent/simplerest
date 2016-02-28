@@ -20,7 +20,10 @@ package com.anrisoftware.simplerest.owncloudocs;
 
 import java.net.URI;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.anrisoftware.simplerest.core.AbstractSimpleGetWorker;
 import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
@@ -31,24 +34,26 @@ import com.google.inject.assistedinject.Assisted;
  * Makes a GET request to retrieve the status.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 class StatusSimpleGetWorker extends
         AbstractSimpleGetWorker<OwncloudStatusMessage> {
 
     interface StatusSimpleGetWorkerFactory {
 
-        StatusSimpleGetWorker create(Object parent, URI requestUri,
-                OwncloudAccount account);
+        StatusSimpleGetWorker create(@Assisted Object parent,
+                @Assisted URI requestUri, @Assisted OwncloudAccount account,
+                @Assisted @Nullable CloseableHttpClient httpClient);
 
     }
 
     @Inject
     StatusSimpleGetWorker(@Assisted Object parent, @Assisted URI requestUri,
             @Assisted OwncloudAccount account,
+            @Assisted @Nullable CloseableHttpClient httpClient,
             ParseStatusResponse parseResponse,
             NopParseResponse parseErrorResponse) {
-        super(parent, requestUri, parseResponse, parseErrorResponse);
+        super(parent, requestUri, httpClient, parseResponse, parseErrorResponse);
         setAccount(account);
         setCompressed(true);
         addHeader("Content-Type",

@@ -22,6 +22,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * Shares information message.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class DefaultSharesMessage implements SharesMessage {
 
     private final DefaultOwncloudMessage<ShareData> message;

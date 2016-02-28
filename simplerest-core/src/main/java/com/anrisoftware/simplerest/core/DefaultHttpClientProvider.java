@@ -18,36 +18,32 @@
  */
 package com.anrisoftware.simplerest.core;
 
-import java.net.URI;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 /**
- * Makes a GET request to the REST API using a pooled HTTP client.
- *
- * @param <T>
- *            the type of the requests.
+ * Provides the {@link CloseableHttpClient}.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-public abstract class AbstractPoolingSimpleGetWorker<T> extends
-        AbstractSimpleGetWorker<T> {
+@Singleton
+public class DefaultHttpClientProvider implements Provider<CloseableHttpClient> {
 
-    private CloseableHttpClient httpClient;
+    private final CloseableHttpClient httpclient;
 
-    protected AbstractPoolingSimpleGetWorker(Object parent, URI requestUri,
-            ParseResponse<T> parseResponse,
-            ParseResponse<? extends Message> parseErrorResponse) {
-        super(parent, requestUri, parseResponse, parseErrorResponse);
-    }
-
-    public void setHttpClient(CloseableHttpClient httpClient) {
-        this.httpClient = httpClient;
+    DefaultHttpClientProvider() {
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+        this.httpclient = HttpClients.custom().setConnectionManager(cm).build();
     }
 
     @Override
-    protected CloseableHttpClient createHttpClient() {
-        return httpClient;
+    public CloseableHttpClient get() {
+        return httpclient;
     }
+
 }

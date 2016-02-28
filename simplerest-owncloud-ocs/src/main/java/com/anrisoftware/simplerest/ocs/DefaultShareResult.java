@@ -20,6 +20,12 @@ package com.anrisoftware.simplerest.ocs;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * Share result.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class DefaultShareResult implements ShareResult {
 
     private int id;

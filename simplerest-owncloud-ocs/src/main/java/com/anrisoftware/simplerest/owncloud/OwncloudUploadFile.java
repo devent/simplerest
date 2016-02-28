@@ -26,7 +26,7 @@ import com.anrisoftware.simplerest.core.SimpleRestException;
  * Uploads a file to the Owncloud server.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public interface OwncloudUploadFile extends Callable<OwncloudUploadFile> {
 

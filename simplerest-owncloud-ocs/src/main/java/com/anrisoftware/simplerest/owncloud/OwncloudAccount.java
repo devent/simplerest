@@ -26,7 +26,7 @@ import com.anrisoftware.simplerest.core.RestAccount;
  * Owncloud REST account.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public interface OwncloudAccount extends RestAccount {
 

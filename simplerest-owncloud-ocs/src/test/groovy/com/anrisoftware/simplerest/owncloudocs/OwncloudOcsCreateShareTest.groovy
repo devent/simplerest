@@ -19,16 +19,22 @@
 package com.anrisoftware.simplerest.owncloudocs
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.simplerest.utils.Dependencies.injector
-import static com.google.inject.Guice.createInjector
+import static org.junit.Assume.*
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
+import javax.inject.Inject
+
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
+import com.anrisoftware.simplerest.core.DefaultHttpClientProvider
+import com.anrisoftware.simplerest.owncloud.DefaultOwncloudAccountFromEnv
+import com.anrisoftware.simplerest.owncloud.RestOwncloudModule
 import com.anrisoftware.simplerest.owncloud.ShareType
-import com.anrisoftware.simplerest.utils.Dependencies
+import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsCreateShare.OwncloudOcsCreateShareFactory
+import com.google.inject.Guice
 
 /**
  * @see OwncloudOcsCreateShare
@@ -36,54 +42,79 @@ import com.anrisoftware.simplerest.utils.Dependencies
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 1.0
  */
-@CompileStatic
 @Slf4j
+@CompileStatic
 class OwncloudOcsCreateShareTest {
 
+    @Inject
+    DefaultHttpClientProvider clientProvider
+
+    @Inject
+    DefaultOwncloudAccountFromEnv account
+
+    @Inject
+    OwncloudOcsCreateShareFactory createShareFactory
+
+    static List<LinkedHashMap> testCases = [
+        [
+            path: '/test/test.txt',
+            type: ShareType.link,
+            shareWith: null,
+            publicUpload: null,
+            password: null,
+            permissions: null,
+        ],
+        [
+            path: '/test/test.txt',
+            type: ShareType.link,
+            shareWith: null,
+            publicUpload: null,
+            password: 'abc1234',
+            permissions: null,
+        ],
+    ]
+
     @Test
-    void "create new share public"() {
-        def account = dep.createAccount()
-        if (!account) {
-            return
-        }
-        def testCases = [
-            [
-                path: '/test/test.txt',
-                type: ShareType.link,
-                shareWith: null,
-                publicUpload: null,
-                password: null,
-                permissions: null,
-            ],
-            [
-                path: '/test/test.txt',
-                type: ShareType.link,
-                shareWith: null,
-                publicUpload: null,
-                password: 'abc1234',
-                permissions: null,
-            ],
-        ]
+    void "create new share"() {
         testCases.eachWithIndex { Map test, int k ->
             log.info '{}.Test case: {}', k, test
-            String path = test.path
-            ShareType type = test.type
-            String shareWith = test.shareWith
-            Boolean publicUpload = test.publicUpload
-            String password = test.password
-            Integer permissions = test.permissions
-            def shares = dep.createShareFactory.create(account, path, type, shareWith, publicUpload, password, permissions)
-            def message = shares.call()
-            log.info "Received result: {}", message
-            assert message.meta.statuscode == 100
+            "do create new share"(test)
         }
     }
 
-    static Dependencies dep
+    @Test
+    void "create new share, pooling"() {
+        List<Thread> threads = []
+        testCases.eachWithIndex { Map test, int k ->
+            log.info '{}.Test case: {}', k, test
+            threads << Thread.start { "do create new share"(test) }
+        }
+        threads.each { it.join() }
+    }
+
+    void "do create new share"(Map test) {
+        String path = test.path
+        ShareType type = test.type as ShareType
+        String shareWith = test.shareWith
+        Boolean publicUpload = test.publicUpload
+        String password = test.password
+        Integer permissions = test.permissions as Integer
+        def shares = createShareFactory.create(account.build(), path, type, shareWith, publicUpload, password, permissions, clientProvider.get())
+        def message = shares.call()
+        log.info "Received result: {}", message
+        assert message.meta.statuscode == 100
+    }
+
+    @Before
+    void setupTest() {
+        toStringStyle
+        Guice.createInjector(new RestOwncloudModule(), new RestOwncloudOcsModule()).injectMembers(this)
+    }
 
     @BeforeClass
-    static void createFactory() {
-        toStringStyle
-        this.dep = injector.getInstance Dependencies
+    static void checkOwncloud() {
+        assumeTrue 'Could not reach anrisoftware.com', InetAddress.getByName('anrisoftware.com') != null
+        assumeTrue "No Owncloud account variables set: ${DefaultOwncloudAccountFromEnv.OWNCLOUD_URI_PROPERTY}",
+                DefaultOwncloudAccountFromEnv.haveOwncloudAccountEnv()
     }
 }

@@ -27,7 +27,7 @@ import com.anrisoftware.simplerest.ocs.ShareResultMessage;
  * Creates a new share.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public interface OwncloudCreateShare extends Callable<ShareResultMessage> {
 

@@ -29,12 +29,14 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.FileEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.anrisoftware.simplerest.core.SimpleRestException;
 import com.anrisoftware.simplerest.owncloud.OwncloudAccount;
 import com.anrisoftware.simplerest.owncloud.OwncloudUploadFile;
 import com.anrisoftware.simplerest.owncloudocs.SimplePutWorker.SimplePutWorkerFactory;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * <p>
@@ -56,6 +58,26 @@ import com.google.inject.assistedinject.Assisted;
  * upload.call();
  * </pre>
  *
+ * <p>
+ * Usage example using pooling HTTP client.
+ * </p>
+ *
+ * <pre>
+ * DefaultOwncloudAccountFactory accountFactory;
+ * account = accountFactory.create(new URI(account))
+ * PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+ * CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(cm).build();
+ * 
+ * public void run() {
+ *      OwncloudOcsUploadFileFactory uploadFileFactory;
+ *      OwncloudUploadFile upload;
+ *      file = new File("test.txt");
+ *      remotePath = "Public/test.txt";
+ *      upload = uploadFileFactory.create(account, file, remotePath, ContentType.create('text/plain', 'UTF-8'), httpclient)
+ *      upload.call();
+ * }
+ * </pre>
+ *
  * @author Erwin Müller, erwin.mueller@deventm.de
  * @since 0.1
  */
@@ -63,8 +85,14 @@ public class OwncloudOcsUploadFile implements OwncloudUploadFile {
 
     public interface OwncloudOcsUploadFileFactory {
 
-        OwncloudUploadFile create(OwncloudAccount account, File file,
-                String remotePath, ContentType contentType);
+        OwncloudUploadFile create(@Assisted OwncloudAccount account,
+                @Assisted File file, @Assisted String remotePath,
+                @Assisted ContentType contentType);
+
+        OwncloudUploadFile create(@Assisted OwncloudAccount account,
+                @Assisted File file, @Assisted String remotePath,
+                @Assisted ContentType contentType,
+                @Assisted CloseableHttpClient httpClient);
 
     }
 
@@ -76,6 +104,8 @@ public class OwncloudOcsUploadFile implements OwncloudUploadFile {
 
     private final String remotePath;
 
+    private final NopParseResponse nopParseResponse;
+
     @Inject
     private SimplePutWorkerFactory workerFactory;
 
@@ -84,18 +114,32 @@ public class OwncloudOcsUploadFile implements OwncloudUploadFile {
 
     private String requiredEtag;
 
-    private final NopParseResponse nopParseResponse;
+    private CloseableHttpClient httpClient;
 
-    @Inject
+    @AssistedInject
     OwncloudOcsUploadFile(@Assisted OwncloudAccount account,
             @Assisted File file, @Assisted String remotePath,
             @Assisted ContentType contentType, NopParseResponse nopParseResponse) {
+        this(account, file, remotePath, contentType, null, nopParseResponse);
+    }
+
+    @AssistedInject
+    OwncloudOcsUploadFile(@Assisted OwncloudAccount account,
+            @Assisted File file, @Assisted String remotePath,
+            @Assisted ContentType contentType,
+            @Assisted CloseableHttpClient httpClient,
+            NopParseResponse nopParseResponse) {
         this.account = account;
         this.file = file;
         this.remotePath = remotePath;
         this.contentType = contentType;
         this.requiredEtag = null;
+        this.httpClient = httpClient;
         this.nopParseResponse = nopParseResponse;
+    }
+
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     public void setRequiredEtag(String etag) {
@@ -115,8 +159,8 @@ public class OwncloudOcsUploadFile implements OwncloudUploadFile {
 
     private void sendRequest() throws SimpleRestException {
         URI requestUri = getRequestURI();
-        SimplePutWorker requestWorker = workerFactory.create(this,
-                requestUri, getAccount(), nopParseResponse, nopParseResponse);
+        SimplePutWorker requestWorker = workerFactory.create(this, requestUri,
+                getAccount(), httpClient, nopParseResponse, nopParseResponse);
         requestWorker.addHeader("OC-Total-Length",
                 Long.toString(FileUtils.sizeOf(file)));
         if (requiredEtag != null) {

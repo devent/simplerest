@@ -19,69 +19,101 @@
 package com.anrisoftware.simplerest.owncloudocs
 
 import static com.anrisoftware.globalpom.utils.TestUtils.*
-import static com.anrisoftware.simplerest.utils.Dependencies.*
-import static com.google.inject.Guice.createInjector
+import static org.junit.Assume.*
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
+import javax.inject.Inject
+
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
-import com.anrisoftware.simplerest.utils.Dependencies
+import com.anrisoftware.simplerest.core.DefaultHttpClientProvider
+import com.anrisoftware.simplerest.owncloud.DefaultOwncloudAccountFromEnv
+import com.anrisoftware.simplerest.owncloud.RestOwncloudModule
+import com.anrisoftware.simplerest.owncloudocs.OwncloudOcsShares.OwncloudOcsSharesFactory
+import com.google.inject.Guice
 
 /**
  * @see OwncloudOcsShares
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 @Slf4j
+@CompileStatic
 class OwncloudOcsSharesTest {
+
+    @Inject
+    DefaultHttpClientProvider clientProvider
+
+    @Inject
+    DefaultOwncloudAccountFromEnv account
+
+    @Inject
+    OwncloudOcsSharesFactory sharesFactory
+
+    static List<LinkedHashMap> testCases = [
+        [
+            path: null,
+            expectedStatusCode: 100,
+            expectedDataSize: null,
+        ],
+        [
+            path: '/test/shared',
+            expectedStatusCode: 100,
+            expectedDataSize: 1,
+        ],
+        [
+            path: '/test/not_shared',
+            expectedStatusCode: 404,
+            expectedDataSize: 0,
+        ],
+    ]
 
     @Test
     void "retrieve shares"() {
-        def account = dep.createAccount()
-        if (!account) {
-            return
+        testCases.eachWithIndex { Map test, int k ->
+            log.info '{}.Test case: {}', k, test
+            "do retrieve shares"(test)
         }
-        def shares = dep.sharesFactory.create(account)
-        def message = shares.call()
-        log.info "Received shares: {}", message
-        assert message.meta.statuscode == 100
     }
 
     @Test
-    void "retrieve shares for path"() {
-        def account = dep.createAccount()
-        if (!account) {
-            return
+    void "retrieve shares, pooling"() {
+        List<Thread> threads = []
+        testCases.eachWithIndex { Map test, int k ->
+            log.info '{}.Test case: {}', k, test
+            threads << Thread.start { "do retrieve shares"(test) }
         }
-        def shares = dep.sharesFactory.create(account)
-        shares.path = '/test/shared'
-        def message = shares.call()
-        log.info "Received shares: {}", message
-        assert message.meta.statuscode == 100
-        assert message.data.size() == 1
+        threads.each { it.join() }
     }
 
-    @Test
-    void "not shared path"() {
-        def account = dep.createAccount()
-        if (!account) {
-            return
+    def "do retrieve shares"(Map test) {
+        String path = test.path
+        def shares = sharesFactory.create account.build(), clientProvider.get()
+        if (path) {
+            shares.setPath path
         }
-        def shares = dep.sharesFactory.create(account)
-        shares.path = '/test/not_shared'
         def message = shares.call()
         log.info "Received shares: {}", message
-        assert message.meta.statuscode == 404
-        assert message.data.size() == 0
+        assert message.meta.statuscode == test.expectedStatusCode
+        if (test.expectedDataSize) {
+            assert message.data.size() == test.expectedDataSize
+        }
     }
 
-    static Dependencies dep
+    @Before
+    void setupTest() {
+        toStringStyle
+        Guice.createInjector(new RestOwncloudModule(), new RestOwncloudOcsModule()).injectMembers(this)
+    }
 
     @BeforeClass
-    static void createFactory() {
-        toStringStyle
-        this.dep = injector.getInstance Dependencies
+    static void checkOwncloud() {
+        assumeTrue 'Could not reach anrisoftware.com', InetAddress.getByName('anrisoftware.com') != null
+        assumeTrue "No Owncloud account variables set: ${DefaultOwncloudAccountFromEnv.OWNCLOUD_URI_PROPERTY}",
+                DefaultOwncloudAccountFromEnv.haveOwncloudAccountEnv()
     }
 }

@@ -18,6 +18,12 @@
  */
 package com.anrisoftware.simplerest.ocs;
 
+/**
+ * Owncloud response information.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public interface OwncloudMeta {
 
     String getStatus();

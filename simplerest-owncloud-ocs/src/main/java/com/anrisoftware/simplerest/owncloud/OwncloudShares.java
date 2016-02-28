@@ -27,7 +27,7 @@ import com.anrisoftware.simplerest.ocs.SharesMessage;
  * Retrieves information about shares.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public interface OwncloudShares extends Callable<SharesMessage> {
 

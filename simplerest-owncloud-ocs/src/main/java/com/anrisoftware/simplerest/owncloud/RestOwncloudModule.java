@@ -26,7 +26,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @see DefaultOwncloudAccountFactory
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.1
  */
 public class RestOwncloudModule extends AbstractModule {
 

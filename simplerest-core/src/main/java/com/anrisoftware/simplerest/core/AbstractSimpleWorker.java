@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -41,6 +42,12 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 
+/**
+ * Using a {@link CloseableHttpClient} to send a request to the server.
+ *
+ * @author Erwin Müller, erwin.mueller@deventm.de
+ * @since 0.1
+ */
 public class AbstractSimpleWorker<T> {
 
     protected final URI requestUri;
@@ -51,25 +58,53 @@ public class AbstractSimpleWorker<T> {
 
     protected final ParseResponse<? extends Message> parseErrorResponse;
 
+    @Inject
+    private AbstractSimpleWorkerLogger log;
+
     protected RestAccount account;
 
     protected List<Header> headers;
 
-    @Inject
-    private AbstractSimpleWorkerLogger log;
+    protected CloseableHttpClient httpClient;
 
+    /**
+     *
+     * @param parent
+     *            the worker {@link Object} parent.
+     *
+     * @param requestUri
+     *            the requests {@link URI} URI.
+     *
+     * @param httpClient
+     *            the {@link CloseableHttpClient} HTTP client or {@code null}.
+     *
+     * @param parseResponse
+     *            the {@link ParseResponse} to parse the response.
+     *
+     * @param parseErrorResponse
+     *            the {@link ParseResponse} to parse the error response.
+     */
     protected AbstractSimpleWorker(Object parent, URI requestUri,
-            ParseResponse<T> parseResponse,
+            CloseableHttpClient httpClient, ParseResponse<T> parseResponse,
             ParseResponse<? extends Message> parseErrorResponse) {
         this.parent = parent;
         this.requestUri = requestUri;
         this.parseResponse = parseResponse;
         this.parseErrorResponse = parseErrorResponse;
         this.headers = new ArrayList<Header>();
+        this.httpClient = httpClient;
     }
 
     public Object getParent() {
         return parent;
+    }
+
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
+    public CloseableHttpClient getHttpClient() {
+        return httpClient;
     }
 
     public void setAccount(RestAccount account) {
@@ -102,8 +137,10 @@ public class AbstractSimpleWorker<T> {
      * @return the {@link CloseableHttpClient} client.
      */
     protected CloseableHttpClient createHttpClient() {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        return httpclient;
+        if (httpClient == null) {
+            this.httpClient = HttpClients.createDefault();
+        }
+        return httpClient;
     }
 
     /**
@@ -119,7 +156,7 @@ public class AbstractSimpleWorker<T> {
      *            the {@link StatusLine}.
      *
      * @return the response or {@code null} if the status code equals to
-     *         SC_NO_CONTENT.
+     *         {@link HttpStatus#SC_NO_CONTENT}.
      *
      * @throws BadResponseException
      * @throws ErrorParseResponseException
@@ -146,7 +183,7 @@ public class AbstractSimpleWorker<T> {
     }
 
     /**
-     * Execute the request.
+     * Executes the request.
      *
      * @param httpclient
      *            the {@link CloseableHttpClient}.

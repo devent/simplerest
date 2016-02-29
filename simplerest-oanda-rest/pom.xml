@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.anrisoftware.simplerest</groupId>
 		<artifactId>simplerest-parent</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.3</version>
 		<relativePath>../simplerest-parent</relativePath>
 	</parent>
 
@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>com.anrisoftware.simplerest</groupId>
 			<artifactId>simplerest-core</artifactId>
-			<version>0.3-SNAPSHOT</version>
+			<version>0.3</version>
 		</dependency>
 
 		<!-- globalpom -->

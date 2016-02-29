@@ -11,6 +11,7 @@
     <modules>
         <module>simplerest-parent</module>
         <module>simplerest-core</module>
+        <module>simplerest-oanda-rest</module>
         <module>simplerest-owncloud-ocs</module>
     </modules>
 

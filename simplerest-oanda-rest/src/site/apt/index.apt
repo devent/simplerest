@@ -1,0 +1,61 @@
+~~
+~~ Copyright 2016 Erwin Müller <erwin.mueller@deventm.org>
+~~
+~~ This file is part of simplerest-oanda-rest.
+~~
+~~ simplerest-oanda-rest is free software: you can redistribute it and/or modify it
+~~ under the terms of the GNU Lesser General Public License as published by the
+~~ Free Software Foundation, either version 3 of the License, or (at your
+~~ option) any later version.
+~~
+~~ simplerest-oanda-rest is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+~~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+~~ details.
+~~
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with simplerest-oanda-rest. If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Description
+
+    Access Forext trading via the Oanda REST API.
+
+SCM
+
+    * {{{https://anrisoftware.com/projects/projects/simple-rest/repository}Main Repository}}
+
+    * git@anrisoftware.com:simplerest.git
+
+    * {{{https://github.com/devent/simplerest}Github Mirror Repository}}
+
+    * git@github.com:devent/simplerest.git
+
+Maven
+
+---
+<dependency>
+    <groupId>com.anrisoftware.simplerest</groupId>
+    <artifactId>simplerest-oanda-rest</artifactId>
+    <version>0.3</version>
+</dependency>
+---
+
+License
+
+    Copyright 2016 Erwin Müller <erwin.mueller@deventm.org>
+
+    This file is part of simplerest-owncloud-ocs.
+
+    simplerest-owncloud-ocs is free software: you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+    simplerest-owncloud-ocs is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+details.
+
+    You should have received a copy of the GNU Lesser General Public License
+along with simplerest-owncloud-ocs. If not, see <http://www.gnu.org/licenses/>.

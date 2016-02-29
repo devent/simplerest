@@ -20,6 +20,8 @@ package com.anrisoftware.simplerest.owncloud;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -107,6 +109,11 @@ public class DefaultOwncloudAccountFromEnv implements Builder<OwncloudAccount> {
     public static final String OWNCLOUD_ACCOUNT_BASEURI_PROPERTY = DefaultOwncloudAccountURIFromEnv.OWNCLOUD_ACCOUNT_BASEURI_PROPERTY;
 
     public static final String OWNCLOUD_URI_PROPERTY = DefaultOwncloudAccountURIFromEnv.OWNCLOUD_URI_PROPERTY;
+
+    public static final List<String> OWNCLOUD_ACCOUNT_PROPERTIES = Arrays
+            .asList(OWNCLOUD_ACCOUNT_USER_PROPERTY,
+                    OWNCLOUD_ACCOUNT_PASSWORD_PROPERTY,
+                    OWNCLOUD_ACCOUNT_BASEURI_PROPERTY, OWNCLOUD_URI_PROPERTY);
 
     public static final String owncloudAccountUser = DefaultOwncloudAccountURIFromEnv.owncloudAccountUser;
 

@@ -10,15 +10,15 @@
 		<relativePath>../simplerest-parent</relativePath>
 	</parent>
 
-	<artifactId>simplerest-owncloud-ocs</artifactId>
-	<name>Simple REST :: Owncloud OCS</name>
-	<description>Access Owncloud OCS via REST API.</description>
+	<artifactId>simplerest-oanda-rest</artifactId>
+	<name>Simple REST :: Oanda REST</name>
+	<description>Access Forex trading via the Oanda REST API.</description>
 	<inceptionYear>2016</inceptionYear>
-	<url>https://anrisoftware.com/projects/projects/simplerest-owncloud-ocs</url>
+	<url>https://anrisoftware.com/projects/projects/simplerest-oanda-rest</url>
 
 	<issueManagement>
 		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/projects/simplerest-owncloud-ocs</url>
+		<url>https://anrisoftware.com/projects/projects/simple-rest</url>
 	</issueManagement>
 
 	<scm>
@@ -32,6 +32,11 @@
 		<dependency>
 			<groupId>com.anrisoftware.globalpom</groupId>
 			<artifactId>globalpom-groovytestutils</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.perfidix</groupId>
+			<artifactId>perfidix</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -93,6 +98,13 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
+
+		<!-- historyexporter -->
+		<dependency>
+			<groupId>org.jopendocument</groupId>
+			<artifactId>jOpenDocument</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -103,7 +115,8 @@
 				<version>2.19.1</version>
 				<configuration>
 					<systemPropertyVariables>
-						<user.owncloud.uri>${user.owncloud.uri}</user.owncloud.uri>
+						<user.oanda.account.number>${user.oanda.account.number}</user.oanda.account.number>
+						<user.oanda.account.token>${user.oanda.account.token}</user.oanda.account.token>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

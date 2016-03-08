@@ -20,23 +20,38 @@ package com.anrisoftware.simplerest.core;
 
 import java.net.URI;
 
-import org.apache.http.Header;
+import javax.inject.Inject;
+
+import org.apache.http.HttpRequest;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.joda.time.Duration;
 
 /**
- * Makes a GET request to the REST API.
+ * Makes a GET request to the REST API and repeats the request on receiving the
+ * 429/HTTP-too many requests code.
  *
  * @param <T>
  *            the type of the requests.
  *
  * @author Erwin Müller, erwin.mueller@deventm.de
- * @since 1.0
+ * @since 0.4
  */
-public abstract class AbstractSimpleGetWorker<T> extends
-        AbstractSimpleWorker<T> {
+public abstract class AbstractRepeatSimpleGetWorker<T> extends
+        AbstractSimpleGetWorker<T> {
+
+    @Inject
+    private AbstractRepeatSimpleGetWorkerLogger log;
+
+    private Duration requestsRepeateWaitDuration;
+
+    private Duration requestsRepeateWait;
+
+    private int requestsRepeateCount;
+
+    private int requestsRepeateMax;
 
     /**
      *
@@ -55,33 +70,60 @@ public abstract class AbstractSimpleGetWorker<T> extends
      * @param parseErrorResponse
      *            the {@link ParseResponse} to parse the error response.
      */
-    protected AbstractSimpleGetWorker(Object parent, URI requestUri,
+    protected AbstractRepeatSimpleGetWorker(Object parent, URI requestUri,
             CloseableHttpClient httpClient, ParseResponse<T> parseResponse,
             ParseResponse<? extends Message> parseErrorResponse) {
         super(parent, requestUri, httpClient, parseResponse, parseErrorResponse);
+        this.requestsRepeateMax = 3;
+        this.requestsRepeateWaitDuration = Duration.millis(500);
     }
 
-    /**
-     * Makes the request and retrieves the data.
-     *
-     * @return the data.
-     *
-     * @throws SimpleRestException
-     */
+    public void setRequestsRepeateWaitDuration(Duration duration) {
+        this.requestsRepeateWaitDuration = duration;
+    }
+
+    public void setRequestsRepeateMax(int requestsRepeateMax) {
+        this.requestsRepeateMax = requestsRepeateMax;
+    }
+
+    @Override
     public T retrieveData() throws SimpleRestException {
+        resetRequestsRepeate();
+        T data = super.retrieveData();
+        resetRequestsRepeate();
+        return data;
+    }
+
+    @Override
+    protected T repeatRequest(CloseableHttpResponse previouslyResponse,
+            HttpRequest previouslyRequest, StatusLine previouslyStatusLine)
+            throws SimpleRestException {
+        int repeateCount = requestsRepeateCount;
+        int repeateMax = requestsRepeateMax;
+        Duration repeateWait = requestsRepeateWait;
+        if (repeateCount == repeateMax) {
+            throw parseErrorMessage(previouslyRequest, previouslyResponse,
+                    previouslyStatusLine);
+        }
+        try {
+            log.repeatRequestsSleep(parent, repeateCount, repeateWait);
+            Thread.sleep(repeateWait.getMillis());
+        } catch (InterruptedException e) {
+            return null;
+        }
         CloseableHttpClient httpclient = createHttpClient();
         HttpGet httpget = createHttpGet();
         CloseableHttpResponse response = executeRequest(httpclient, httpget);
         StatusLine statusLine = response.getStatusLine();
+        repeateCount++;
+        repeateWait = repeateWait.plus(requestsRepeateWaitDuration);
+        this.requestsRepeateCount = repeateCount;
+        this.requestsRepeateWait = repeateWait;
         return parseResponse(response, httpget, statusLine);
     }
 
-    protected final HttpGet createHttpGet() {
-        HttpGet httpget = new HttpGet(requestUri);
-        for (Header header : headers) {
-            httpget.addHeader(header);
-        }
-        return httpget;
+    private void resetRequestsRepeate() {
+        this.requestsRepeateCount = 0;
+        this.requestsRepeateWait = requestsRepeateWaitDuration;
     }
-
 }

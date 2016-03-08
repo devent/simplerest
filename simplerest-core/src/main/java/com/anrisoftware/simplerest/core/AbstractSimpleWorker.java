@@ -50,6 +50,8 @@ import org.apache.http.message.BasicHeader;
  */
 public class AbstractSimpleWorker<T> {
 
+    private static final int SC_TOO_MANY_REQUESTS = 429;
+
     protected final URI requestUri;
 
     protected final Object parent;
@@ -158,28 +160,49 @@ public class AbstractSimpleWorker<T> {
      * @return the response or {@code null} if the status code equals to
      *         {@link HttpStatus#SC_NO_CONTENT}.
      *
-     * @throws BadResponseException
-     * @throws ErrorParseResponseException
-     * @throws ErrorCloseResponseException
-     * @throws ErrorResponseDataException
+     * @throws SimpleRestException
      */
     protected T parseResponse(CloseableHttpResponse response,
             HttpRequest request, StatusLine statusLine)
-            throws BadResponseException, ErrorParseResponseException,
-            ErrorCloseResponseException, ErrorResponseDataException {
+            throws SimpleRestException {
         log.retrieveResponse(parent, response, request);
-        switch (statusLine.getStatusCode()) {
+        int code = statusLine.getStatusCode();
+        switch (code) {
         case SC_NO_CONTENT:
             return null;
-        case SC_BAD_REQUEST:
+        case SC_TOO_MANY_REQUESTS:
+            return repeatRequest(response, request, statusLine);
+        }
+        if (code >= SC_OK && code < 300) {
+            return retrieveResponse(response);
+        }
+        if (code >= SC_BAD_REQUEST && code < 500) {
             throw parseErrorMessage(request, response, statusLine);
-        default:
-            if (statusLine.getStatusCode() >= SC_OK
-                    && statusLine.getStatusCode() < 300) {
-                return retrieveResponse(response);
-            }
         }
         throw new ErrorResponseDataException(request, statusLine);
+    }
+
+    /**
+     * Repeats the requests after receiving a {@link #SC_TOO_MANY_REQUESTS}
+     * response.
+     *
+     * @param previoslyResponse
+     *
+     * @param previouslyRequest
+     *
+     * @param previouslyStatusLine
+     *
+     * @return
+     *
+     * @throws SimpleRestException
+     *
+     * @since 0.4
+     */
+    protected T repeatRequest(CloseableHttpResponse previouslyResponse,
+            HttpRequest previouslyRequest, StatusLine previouslyStatusLine)
+            throws SimpleRestException {
+        throw parseErrorMessage(previouslyRequest, previouslyResponse,
+                previouslyStatusLine);
     }
 
     /**
@@ -190,13 +213,14 @@ public class AbstractSimpleWorker<T> {
      *
      * @param request
      *            the {@link HttpRequest}.
+     *
      * @return the {@link CloseableHttpResponse}.
      *
-     * @throws ErrorExecuteRequestException
+     * @throws SimpleRestException
      */
     protected CloseableHttpResponse executeRequest(
             CloseableHttpClient httpclient, HttpUriRequest request)
-            throws ErrorExecuteRequestException {
+            throws SimpleRestException {
         try {
             return httpclient.execute(request);
         } catch (ClientProtocolException e) {
@@ -206,7 +230,20 @@ public class AbstractSimpleWorker<T> {
         }
     }
 
-    private BadResponseException parseErrorMessage(HttpRequest request,
+    /**
+     * Parses the error message received.
+     *
+     * @param request
+     *
+     * @param response
+     *
+     * @param statusLine
+     *
+     * @return
+     *
+     * @since 0.4
+     */
+    protected BadResponseException parseErrorMessage(HttpRequest request,
             CloseableHttpResponse response, StatusLine statusLine) {
         try {
             Message message = parseErrorResponse.parse(response);

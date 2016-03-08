@@ -28,13 +28,9 @@ import javax.inject.Inject;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 
-import com.anrisoftware.simplerest.core.AbstractSimpleGetWorker;
-import com.anrisoftware.simplerest.core.BadResponseException;
-import com.anrisoftware.simplerest.core.ErrorCloseResponseException;
-import com.anrisoftware.simplerest.core.ErrorExecuteRequestException;
-import com.anrisoftware.simplerest.core.ErrorParseResponseException;
-import com.anrisoftware.simplerest.core.ErrorResponseDataException;
+import com.anrisoftware.simplerest.core.AbstractRepeatSimpleGetWorker;
 import com.anrisoftware.simplerest.core.ParseResponse;
+import com.anrisoftware.simplerest.core.SimpleRestException;
 import com.anrisoftware.simplerest.oanda.api.OandaAccount;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.inject.assistedinject.Assisted;
@@ -46,13 +42,13 @@ import com.google.inject.assistedinject.Assisted;
  * @since 0.3
  */
 @SuppressWarnings("rawtypes")
-class SimpleRequestWorker extends AbstractSimpleGetWorker<Collection<?>> {
+class SimpleRequestWorker extends AbstractRepeatSimpleGetWorker<Collection<?>> {
 
     /**
      * Factory to create the simple request worker.
      *
      * @author Erwin Müller, erwin.mueller@deventm.de
-     * @since 1.0
+     * @since 0.3
      */
     interface SimpleRequestWorkerFactory {
 
@@ -104,11 +100,10 @@ class SimpleRequestWorker extends AbstractSimpleGetWorker<Collection<?>> {
     }
 
     @Override
-    public Collection retrieveData() throws BadResponseException,
-            ErrorParseResponseException, ErrorExecuteRequestException,
-            ErrorCloseResponseException, ErrorResponseDataException {
+    public Collection retrieveData() throws SimpleRestException {
         Collection data = super.retrieveData();
         log.parsedObjects(getParent(), data != null ? data.size() : 0);
         return data;
     }
+
 }

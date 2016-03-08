@@ -59,5 +59,4 @@ final class SimpleRequestWorkerLogger extends AbstractLogger {
     void parsedObjects(Object parent, int size) {
         debug(parsed_objects, size, parent);
     }
-
 }

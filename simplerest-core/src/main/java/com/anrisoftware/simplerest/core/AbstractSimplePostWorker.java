@@ -74,15 +74,9 @@ public abstract class AbstractSimplePostWorker<T> extends
      *
      * @return the response.
      *
-     * @throws BadResponseException
-     * @throws ErrorParseResponseException
-     * @throws ErrorExecuteRequestException
-     * @throws ErrorCloseResponseException
-     * @throws ErrorResponseDataException
+     * @throws SimpleRestException
      */
-    public T sendData(HttpEntity entity) throws BadResponseException,
-            ErrorParseResponseException, ErrorExecuteRequestException,
-            ErrorCloseResponseException, ErrorResponseDataException {
+    public T sendData(HttpEntity entity) throws SimpleRestException {
         CloseableHttpClient httpclient = createHttpClient();
         HttpPost httpput = new HttpPost(requestUri);
         httpput.setEntity(entity);

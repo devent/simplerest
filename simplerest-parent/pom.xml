@@ -12,7 +12,7 @@
 
     <groupId>com.anrisoftware.simplerest</groupId>
     <artifactId>simplerest-parent</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5</version>
     <packaging>pom</packaging>
     <name>Simple REST :: Parent POM</name>
     <inceptionYear>2016</inceptionYear>

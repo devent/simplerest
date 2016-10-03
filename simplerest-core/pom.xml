@@ -1,39 +1,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.anrisoftware.simplerest</groupId>
-		<artifactId>simplerest-parent</artifactId>
-		<version>0.4</version>
-		<relativePath>../simplerest-parent</relativePath>
-	</parent>
+    <parent>
+        <groupId>com.anrisoftware.simplerest</groupId>
+        <artifactId>simplerest-parent</artifactId>
+        <version>0.5-SNAPSHOT</version>
+        <relativePath>../simplerest-parent</relativePath>
+    </parent>
 
-	<artifactId>simplerest-core</artifactId>
-	<name>Simple REST :: Core</name>
-	<description>Core implementation to access REST API.</description>
-	<inceptionYear>2016</inceptionYear>
-	<url>https://anrisoftware.com/projects/projects/simplerest-core</url>
+    <artifactId>simplerest-core</artifactId>
+    <name>Simple REST :: Core</name>
+    <description>Core implementation to access REST API.</description>
+    <inceptionYear>2016</inceptionYear>
+    <url>https://anrisoftware.com/projects/projects/simplerest-core</url>
 
-	<issueManagement>
-		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/projects/simplerest-core</url>
-	</issueManagement>
+    <issueManagement>
+        <system>Redmine</system>
+        <url>https://anrisoftware.com/projects/projects/simplerest-core</url>
+    </issueManagement>
 
-	<scm>
-		<connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
-		<developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
-		<url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
-	</scm>
+    <scm>
+        <connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
+        <developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
+        <url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
+    </scm>
 
-	<dependencies>
-		<!-- test dependencies -->
-		<dependency>
-			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-groovytestutils</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.anrisoftware.globalpom</groupId>
+            <artifactId>globalpom-groovytestutils</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- globalpom modules -->
         <dependency>
@@ -73,7 +73,7 @@
             <optional>true</optional>
         </dependency>
 
-		<!-- compile dependencies -->
+        <!-- compile dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -83,5 +83,5 @@
             <artifactId>guice-assistedinject</artifactId>
         </dependency>
 
-	</dependencies>
+    </dependencies>
 </project>

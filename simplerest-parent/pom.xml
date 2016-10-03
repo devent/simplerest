@@ -1,139 +1,99 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.anrisoftware.globalpom</groupId>
-		<artifactId>globalpom-groovy</artifactId>
-		<version>2.0</version>
-		<relativePath />
-	</parent>
+    <parent>
+        <groupId>com.anrisoftware.globalpom</groupId>
+        <artifactId>globalpom-groovy</artifactId>
+        <version>2.2</version>
+        <relativePath />
+    </parent>
 
-	<groupId>com.anrisoftware.simplerest</groupId>
-	<artifactId>simplerest-parent</artifactId>
-	<version>0.4</version>
-	<packaging>pom</packaging>
-	<name>Simple REST :: Parent POM</name>
-	<inceptionYear>2016</inceptionYear>
-	<description>Manages the meta-information and dependencies of the project.</description>
-	<url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
+    <groupId>com.anrisoftware.simplerest</groupId>
+    <artifactId>simplerest-parent</artifactId>
+    <version>0.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Simple REST :: Parent POM</name>
+    <inceptionYear>2016</inceptionYear>
+    <description>Manages the meta-information and dependencies of the project.</description>
+    <url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
 
-	<properties>
-		<project.custom.year>${project.inceptionYear}</project.custom.year>
-	</properties>
+    <properties>
+        <project.custom.year>${project.inceptionYear}</project.custom.year>
+    </properties>
 
-	<issueManagement>
-		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
-	</issueManagement>
+    <issueManagement>
+        <system>Redmine</system>
+        <url>https://anrisoftware.com/projects/projects/simplerest-parent</url>
+    </issueManagement>
 
-	<scm>
-		<connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
-		<developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
-		<url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
-	</scm>
+    <scm>
+        <connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
+        <developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
+        <url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
+    </scm>
 
-	<developers>
-		<developer>
-			<id>EM</id>
-			<name>Erwin Müller</name>
-			<organization>Advanced Natural Research Insitute GmbH</organization>
-			<email>erwin.mueller@deventm.org</email>
-			<roles>
-				<role>Owner</role>
-				<role>Developer</role>
-			</roles>
-			<timezone>Europe/Berlin</timezone>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <id>EM</id>
+            <name>Erwin Müller</name>
+            <organization>Advanced Natural Research Institute</organization>
+            <email>erwin.mueller@deventm.org</email>
+            <roles>
+                <role>Owner</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>Europe/Berlin</timezone>
+        </developer>
+    </developers>
 
-	<licenses>
-		<license>
-			<name>LGPLv3</name>
-			<url>http://www.gnu.org/licenses/lgpl.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>LGPLv3</name>
+            <url>http://www.gnu.org/licenses/lgpl.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<distributionManagement>
-		<site>
-			<id>anrisoftware</id>
-			<url>dav:https://anrisoftware.com/javadoc/${project.groupId}/${project.artifactId}</url>
-		</site>
-		<repository>
-			<id>osssonatype</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
-		<snapshotRepository>
-			<id>osssonatype_snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
+    <distributionManagement>
+        <site>
+            <id>anrisoftware</id>
+            <url>dav:https://anrisoftware.com/javadoc/${project.groupId}/${project.artifactId}</url>
+        </site>
+        <repository>
+            <id>osssonatype</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>osssonatype_snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- globalpom -->
-			<dependency>
-				<groupId>com.anrisoftware.globalpom</groupId>
-				<artifactId>globalpom-groovytestutils</artifactId>
-				<version>2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.anrisoftware.globalpom</groupId>
-				<artifactId>globalpom-log</artifactId>
-				<version>2.0</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
 
-			<!-- propertiesutils -->
-			<dependency>
-				<groupId>com.anrisoftware.propertiesutils</groupId>
-				<artifactId>propertiesutils-contextproperties</artifactId>
-				<version>2.0</version>
-			</dependency>
+            <!-- globalpom -->
+            <dependency>
+                <groupId>com.anrisoftware.globalpom</groupId>
+                <artifactId>globalpom-groovytestutils</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.anrisoftware.globalpom</groupId>
+                <artifactId>globalpom-log</artifactId>
+                <version>2.2</version>
+            </dependency>
 
-			<!-- REST Request -->
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>fluent-hc</artifactId>
-				<version>4.5</version>
-			</dependency>
+            <!-- propertiesutils -->
+            <dependency>
+                <groupId>com.anrisoftware.propertiesutils</groupId>
+                <artifactId>propertiesutils-contextproperties</artifactId>
+                <version>2.1</version>
+            </dependency>
 
-			<!-- REST Api -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>2.6.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>2.6.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>2.6.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.datatype</groupId>
-				<artifactId>jackson-datatype-joda</artifactId>
-				<version>2.6.1</version>
-			</dependency>
-
-			<!-- jopendocument -->
-			<dependency>
-				<groupId>org.jopendocument</groupId>
-				<artifactId>jOpenDocument</artifactId>
-				<version>1.3</version>
-			</dependency>
-
-		</dependencies>
-	</dependencyManagement>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

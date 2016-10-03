@@ -1,113 +1,113 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.anrisoftware.simplerest</groupId>
-		<artifactId>simplerest-parent</artifactId>
-		<version>0.4</version>
-		<relativePath>../simplerest-parent</relativePath>
-	</parent>
+    <parent>
+        <groupId>com.anrisoftware.simplerest</groupId>
+        <artifactId>simplerest-parent</artifactId>
+        <version>0.5-SNAPSHOT</version>
+        <relativePath>../simplerest-parent</relativePath>
+    </parent>
 
-	<artifactId>simplerest-owncloud-ocs</artifactId>
-	<name>Simple REST :: Owncloud OCS</name>
-	<description>Access Owncloud OCS via REST API.</description>
-	<inceptionYear>2016</inceptionYear>
-	<url>https://anrisoftware.com/projects/projects/simplerest-owncloud-ocs</url>
+    <artifactId>simplerest-owncloud-ocs</artifactId>
+    <name>Simple REST :: Owncloud OCS</name>
+    <description>Access Owncloud OCS via REST API.</description>
+    <inceptionYear>2016</inceptionYear>
+    <url>https://anrisoftware.com/projects/projects/simplerest-owncloud-ocs</url>
 
-	<issueManagement>
-		<system>Redmine</system>
-		<url>https://anrisoftware.com/projects/projects/simplerest-owncloud-ocs</url>
-	</issueManagement>
+    <issueManagement>
+        <system>Redmine</system>
+        <url>https://anrisoftware.com/projects/projects/simplerest-owncloud-ocs</url>
+    </issueManagement>
 
-	<scm>
-		<connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
-		<developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
-		<url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
-	</scm>
+    <scm>
+        <connection>scm:git:${custom.gitprivate.url}simplerest.git</connection>
+        <developerConnection>scm:git:${custom.gitprivate.url}simplerest.git</developerConnection>
+        <url>https://anrisoftware.com/gitprivate/simplerest.git/</url>
+    </scm>
 
-	<dependencies>
-		<!-- test dependencies -->
-		<dependency>
-			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-groovytestutils</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.anrisoftware.globalpom</groupId>
+            <artifactId>globalpom-groovytestutils</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- own modules -->
-		<dependency>
-			<groupId>com.anrisoftware.simplerest</groupId>
-			<artifactId>simplerest-core</artifactId>
-			<version>0.4</version>
-		</dependency>
+        <!-- own modules -->
+        <dependency>
+            <groupId>com.anrisoftware.simplerest</groupId>
+            <artifactId>simplerest-core</artifactId>
+            <version>0.5-SNAPSHOT</version>
+        </dependency>
 
-		<!-- globalpom -->
-		<dependency>
-			<groupId>com.anrisoftware.globalpom</groupId>
-			<artifactId>globalpom-log</artifactId>
-		</dependency>
+        <!-- globalpom -->
+        <dependency>
+            <groupId>com.anrisoftware.globalpom</groupId>
+            <artifactId>globalpom-log</artifactId>
+        </dependency>
 
-		<!-- propertiesutils -->
-		<dependency>
-			<groupId>com.anrisoftware.propertiesutils</groupId>
-			<artifactId>propertiesutils-contextproperties</artifactId>
-		</dependency>
+        <!-- propertiesutils -->
+        <dependency>
+            <groupId>com.anrisoftware.propertiesutils</groupId>
+            <artifactId>propertiesutils-contextproperties</artifactId>
+        </dependency>
 
-		<!-- jackson modules -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-joda</artifactId>
-			<optional>true</optional>
-		</dependency>
+        <!-- jackson modules -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <optional>true</optional>
+        </dependency>
 
-		<!-- compile dependencies -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-assistedinject</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-	</dependencies>
+        <!-- compile dependencies -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assistedinject</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<configuration>
-					<systemPropertyVariables>
-						<user.owncloud.uri>${user.owncloud.uri}</user.owncloud.uri>
-					</systemPropertyVariables>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <user.owncloud.uri>${user.owncloud.uri}</user.owncloud.uri>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
